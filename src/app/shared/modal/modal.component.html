@@ -1,0 +1,25 @@
+<section>
+
+  <div class="row">
+    <div class="col-12 text-center">
+      <p style="font-size: 30px; font-weight: 400;" class="mt-1">{{data?.titulo}}</p>
+    </div>
+  </div>
+
+  <div mat-dialog-content style="margin: 30px;">
+
+	<p style="font-size: 20px;">{{data?.mensagem}}</p>
+
+  </div>
+  <hr>
+  <div class="row" style="margin-left: 0; margin-right: 0;" >
+
+      <div class="col-xl-6 col-md-6 ml-auto">
+        <button type="button" class="btn btn-block" style="background-color: #6cb575; color: white" (click)="close()">SIM</button>
+      </div>
+      <div class="col-xl-6 col-md-6">
+        <button type="button" class="btn btn-danger btn-block" (click)="close()">NÃO</button>
+      </div>
+
+  </div>
+</section>

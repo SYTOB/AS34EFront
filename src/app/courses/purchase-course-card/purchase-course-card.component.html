@@ -1,0 +1,160 @@
+<div class="container-base hSubBlueContainer-purchase-card">
+  <div class="about-contact-head">
+    <div class="contact-about-height-label" style="padding-right: 80px">
+      <div >
+        <p class=" panel-label-size"  style="color: rgb(95, 95, 95)">Comprar Curso: {{numero}} - Cartão</p>
+        <span style="cursor: pointer;" [routerLink]="['/cursos/detalheCurso/',numero]">
+          <i class="fa fa-hand-o-left" aria-hidden="true"></i> Voltar para detalhes do curso
+        </span>
+        <div class="row ticketOrCard-box">
+
+          <div class="col-xl-12" >
+            <input type="checkbox" class="checkbox-round" id="cartao" name="Cartão de crédito" value="cartao"
+            [routerLink]="['/cursos/comprarCursoCard/',numero]" [routerLinkActive]="['is-active-button-round']"
+            >
+            <label class="font-size-ticketOrCard"  style="color: rgb(95, 95, 95)">
+              Cartão de crédito/débito - <i class="fa fa-credit-card" aria-hidden="true"></i></label>
+          </div>
+          <div class="col-xl-12">
+            <input type="checkbox" class=" checkbox-round" id="cartao" name="Cartão de crédito" value="cartao"
+            [routerLink]="['/cursos/comprarCursoBoleto/',numero]" [routerLinkActive]="['is-active-button-round']"
+            >
+            <label  class="font-size-ticketOrCard"  style="color: rgb(95, 95, 95)">
+              Boleto - <i class="fa fa-file-o" aria-hidden="true"></i></label>
+          </div>
+
+          <br>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="row margin-form-buy" >
+      <form [formGroup]="formulario" (ngSubmit)="onSubmit()" style="width: 100%">
+        <div class="row">
+          <div flex class="col-xl-4 col-lg-4 col-md-4">
+            <div class="form-group">
+              <mat-form-field
+                class="example-full-width"
+                style="font-size: 20px; width: 100%;"
+                appearance="fill"
+              >
+                <mat-label>Nome</mat-label>
+                <input
+                  id="nome"
+                  formControlName="nome"
+                  matInput
+                  placeholder="Nome"
+                  type="text"
+                />
+                <mat-error *ngIf="hasError('nome')"
+                  >Nome é obrigatório.</mat-error
+                >
+                <mat-error *ngIf="hasError('nome', 'minlength')"
+                  >Minímo de 3 caracteres.</mat-error
+                >
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div flex class="col-xl-4 col-lg-4 col-md-4">
+            <div class="form-group">
+
+              <mat-form-field class="example-full-width" style="font-size: 20px; width: 100%;" appearance="fill">
+                  <mat-label>CPF</mat-label>
+                  <input mask="000.000.000-99" id="cpf" formControlName="cpf" matInput placeholder="000.000.000-00" type="text" >
+                  <mat-error *ngIf="hasError('cpf')">CPF é obrigatório.</mat-error>
+
+              </mat-form-field>
+
+            </div>
+          </div>
+
+          <div flex class="col-xl-4 col-lg-4 col-md-4">
+            <div class="form-group">
+
+              <mat-form-field class="example-full-width" style="font-size: 20px; width: 100%;" appearance="fill">
+                  <mat-label>Numero do Cartão</mat-label>
+                  <input mask="0000-0000-0000-0000" id="numeroCartao" formControlName="numeroCartao" matInput placeholder="0000 0000 0000 0000" type="text" >
+                  <mat-error *ngIf="hasError('numeroCartao')">Numero do cartão é obrigatório.</mat-error>
+
+              </mat-form-field>
+
+            </div>
+          </div>
+
+        </div>
+
+        <div class="row" style="margin-top: 30px">
+          <div flex class="col-xl-2 col-lg-2 col-md-2">
+            <div class="form-group">
+
+              <mat-form-field class="example-full-width" style="font-size: 20px; width: 100%;" appearance="fill">
+                  <mat-label>MM</mat-label>
+                  <input mask="00" id="MM" formControlName="MM" matInput placeholder="" type="text" >
+                  <mat-error *ngIf="hasError('MM')">Campo é obrigatório.</mat-error>
+
+              </mat-form-field>
+
+            </div>
+          </div>
+          <div flex class="col-xl-2 col-lg-2 col-md-2">
+            <div class="form-group">
+
+              <mat-form-field class="example-full-width" style="font-size: 20px; width: 100%;" appearance="fill">
+                  <mat-label>AA</mat-label>
+                  <input mask="00" id="AA" formControlName="AA" matInput placeholder="" type="text" >
+                  <mat-error *ngIf="hasError('AA')">Campo é obrigatório.</mat-error>
+
+              </mat-form-field>
+
+            </div>
+          </div>
+          <div flex class="col-xl-4 col-lg-4 col-md-4">
+            <div class="form-group">
+
+              <mat-form-field class="example-full-width" style="font-size: 20px; width: 100%;" appearance="fill">
+                  <mat-label>Código de segurança</mat-label>
+                  <input mask="000" id="codigoSeguranca" formControlName="codigoSeguranca" matInput placeholder="000" type="text" >
+                  <mat-error *ngIf="hasError('codigoSeguranca')">Campo é obrigatório.</mat-error>
+
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 100px; margin-bottom: 100px; width: 50%;">
+          <label style="color: rgb(95, 95, 95); font-size: 30px; "> Detalhes do pedido</label>
+          <hr style="background-color:rgb(95, 95, 95);  ">
+          <div class="row">
+            <div class="col-xl-3 col-lg-3 col-md-3">
+              <label style="color: rgb(95, 95, 95); font-size: 25px;">Curso: {{numero}}</label>
+            </div>
+            <div class="offset-xl-6 col-xl-3 col-lg-3 col-md-3">
+              <label style="color: rgb(95, 95, 95); font-size: 25px;">R$500,00</label>
+
+            </div>
+
+          </div>
+        </div>
+
+        <div
+          class="row"
+          style="height: 100px; margin-top: 25px; padding-top: 15px"
+        >
+          <div flex class="col-xl-12">
+            <button
+              style="margin: 5px; background-color: #6cb575; color: white"
+              type="submit"
+              class="btn button-register-adm"
+            >
+              Comprar <i class="fa fa-credit-card" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+

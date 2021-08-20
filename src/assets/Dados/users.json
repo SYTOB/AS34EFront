@@ -1,0 +1,18 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "CPF": "112,457.254-25",
+      "email": "diovanips@hotmail.com",
+      "senha": 12345,
+      "nome": "Diovani"
+    },
+    {
+      "id": 2,
+      "CPF": "154.584.568-89",
+      "email": "teste@gmail.com",
+      "senha": 12345,
+      "nome": "TesteUser"
+    }
+  ]
+}

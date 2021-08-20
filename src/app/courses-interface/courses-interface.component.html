@@ -1,0 +1,227 @@
+
+
+
+<div class="container-base hRedContainerHeader">
+  <label>{{nomeCurso}}</label>
+</div>
+
+<!--
+<div class="row" style="background-color: white; height: 70px; width: 100%; align-content: center;  ">
+  <div class="offset-xl-7 "></div>
+  <div class="col-xl-1">
+    <button  type="button" class="btn panel-button" style="background-color: #FE4E4E; width: 150px; height: 50px; color:white;">Adicionar</button>
+  </div>
+  <div class="col-xl-1">
+    <button  type="button" class="btn panel-button" style="background-color: #FE4E4E;  width: 150px; height: 50px; color:white;">Editar</button>
+  </div>
+  <div class="col-xl-1">
+    <button type="button" class="btn panel-button" style="background-color: #FE4E4E;  width: 150px; height: 50px; color:white;">Excluir</button>
+  </div>
+</div>
+
+<div class="row" style="height: 900px; background-color: #E4F9FF; margin-left: 0px; margin-right: 0px; box-shadow: 0 7px 22px -11px black;">
+
+
+  <div class="example-list" class="col-xl-2"
+    style="background-color: white; width: 100%; "  >
+    <div class="example-box" style="cursor: pointer;" (click)="mudaUrl(video.url)" *ngFor="let video of listaVideos" >{{video.titulo}}</div>
+
+  </div>
+
+
+
+
+
+
+  <div class="col-xl-10" style="padding: 0px;">
+    <div style="height:100%; background-color: #E4F9FF; padding: 140px 400px 140px 450px; ">
+      <div style="width:820px; height:520px; border-radius: 30px 55px 30px 60px; background-color: white; box-shadow: 0 7px 6px -7px black;"  >
+
+        <iframe width="800" height="500"
+        [src]="urlVideo" title="YouTube video player"
+        frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
+        picture-in-picture" allowfullscreen style="box-shadow: 0 11px 10px -9px black; border-radius: 30px;"></iframe>
+
+      </div>
+    </div>
+
+  </div> -->
+
+
+<section *ngIf="adm">
+  <div class="row container-buttons-video" >
+
+    <span class="col-xl-3 col-lg-3 col-sm-3 col-md-3"
+    style="cursor: pointer; padding-left: 50px; padding-top: 15px; font-size: 20px; font-weight: 400;"
+     [routerLink]="['/painel/cursos']" [routerLinkActive]="['is-active-button']">
+      Barra de controle - Categorias
+    </span>
+
+    <div class="offset-xl-6 offset-lg-3 offset-md-0"></div>
+
+    <div class="col-xl-1 col-lg-2 col-md-3 col-sm-3 widthButton"  >
+
+      <button  type="button" class="btn course-video-button" style="background-color: #6cb575; color: white;"
+       [routerLink]="['/coursesInterface/',nomeCurso,'addCategoria']" >
+       <i class="fa fa-plus" aria-hidden="true"></i> Adicionar
+      </button>
+
+    </div>
+    <div class="col-xl-1 col-lg-2 col-md-3 col-sm-3 widthButton" >
+
+      <button  type="button" class="btn course-video-button" style="background-color: #f5ae64; color: white;"
+      [routerLink]="['/coursesInterface/',nomeCurso,'editCategoria',idVideo,selectedCat]" >
+        <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</button>
+
+    </div>
+    <div class="col-xl-1 col-lg-2 col-md-3 col-sm-3 widthButton">
+
+      <button type="button" class="btn course-video-button">
+        <i class="fa fa-ban" aria-hidden="true"></i> Excluir</button>
+
+    </div>
+
+  </div>
+
+
+
+</section>
+
+<section>
+
+  <hr class="hrSemBorda" style="background-color: white;">
+
+  <div style="background-color: #f5ae64; height:30px; color: white; width: 100%; padding:5px;">
+
+    <span   style="cursor: pointer;  padding-left: 30px; padding-top: 15px;"
+    [routerLink]="['/painel/cursos']" [routerLinkActive]="['is-active-button']">
+      Voltar para meus cursos
+    </span>
+
+  </div>
+
+  <button  type="button" class="btn course-video-button displayCelSkip" style=" width:100%;  border-radius: 0px;"
+  [routerLink]="['/coursesInterface/',nomeCurso,idNext]"
+        [routerLinkActive]="['is-active-button-video']" (click)="setTrue(idNext)">
+  Concluir e ir para a proxima aula
+
+  </button>
+
+  <!-- <mat-drawer-container class="example-container" style="height: 800px;" >
+
+    <mat-drawer class="container-side-video" mode="side" opened >
+
+      <div *ngFor="let categoria of listaCategoria" style="height: 60px; background-color:rgb(247, 247, 247);
+       font-size: 22px; font-weight: 500; padding: 20px;">{{categoria}}
+
+        <div *ngFor="let video of listaVideos" class="row">
+
+          <div *ngIf="video.categoria === categoria"  class="col-lg-12 col-lg-12 col-md-12 col-sm-12 container-titulo-video"
+          [routerLink]="['/coursesInterface/',nomeCurso,video.id]" [routerLinkActive]="['is-active-button']">
+          {{video.titulo}}
+          <input type="checkbox" class="checkbox-round-video" id="video" name="video" value="video" >
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <hr style="background-color: #FE4E4E; opacity: 0.70;">
+
+
+    </mat-drawer>
+
+    <mat-drawer-content class="display-cel container-video">
+
+      <router-outlet></router-outlet>
+
+    </mat-drawer-content>
+
+
+
+  </mat-drawer-container> -->
+
+
+  <mat-drawer-container class="example-container" style="height: 800px;" >
+
+    <mat-drawer  class="container-side-video" mode="side" opened>
+
+      <div  *ngFor="let categoria of listaCategoria"  (click)="matDrawer.toggle()"
+       ng-click="pegaCategoria()">
+
+       <div (click)="mudaValor(categoria)" style="height: 60px; background-color:rgb(247, 247, 247);
+       font-size: 23px; font-weight: 500; padding: 20px; text-align: center;"> {{categoria}}</div>
+
+      <hr style="background-color: #FE4E4E; opacity: 0.40;">
+      </div>
+
+
+
+
+
+
+    </mat-drawer>
+
+    <mat-drawer #matDrawer="matDrawer" class="container-side-video" mode="side"  >
+
+      <button style="width:100%; border:none; background-color: white;
+      font-weight: 500; font-size: 20px; height:30px; padding:5px;" (click)="matDrawer.toggle()">Voltar</button>
+
+      <hr style="background-color: #FE4E4E; opacity: 0.20;">
+
+      <div  style="height: 60px; background-color:rgb(247, 247, 247);
+      font-size: 23px; font-weight: 500; padding: 20px; " > {{selectedCat}} </div>
+
+      <hr style="background-color: #FE4E4E; opacity: 0.70;">
+
+
+        <ul style="list-style: none;" *ngFor="let video of (listaVideos)" class="row"
+        style="list-style: none; padding: 0px; display:block;">
+
+          <li *ngIf="video.categoria == selectedCat">
+
+            <div [class]="{'is-active-button-video-active' : video.visto}"
+            class="col-lg-12 col-lg-12 col-md-12 col-sm-12 container-titulo-video"
+            [routerLink]="['/coursesInterface/',nomeCurso,video.id]"
+            [routerLinkActive]="['is-active-button-video']" (click)="getVideoIdModal(video.id)">
+
+            {{video.titulo}}
+
+            </div>
+
+            <hr style="background-color: #FE4E4E; opacity: 0.10;">
+
+          </li>
+        </ul>
+
+
+
+    </mat-drawer>
+
+    <mat-drawer-content class="display-cel">
+      <div style="width:100%; height:30px; padding-left: 400px; background-color: #E4F9FF;">
+
+      <button  type="button" class="btn course-video-button" style=" width:400px;  border-radius: 0px 10px 10px 0px;"
+      [routerLink]="['/coursesInterface/',nomeCurso,idNext]"
+            [routerLinkActive]="['is-active-button-video']" (click)="setTrue(idNext)">
+      Concluir e ir para a proxima aula
+
+      </button>
+
+      </div>
+
+      <div class="container-video">
+        <router-outlet></router-outlet>
+      </div>
+
+    </mat-drawer-content>
+
+
+
+  </mat-drawer-container>
+
+</section>
+
+
+

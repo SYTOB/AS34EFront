@@ -1,0 +1,29 @@
+<div class="container-base hSubBlueContainer-cursos-detail">
+  <div class="about-contact-head">
+    <div class="contact-about-height-label" style="padding-right: 80px">
+      <div>
+        <p class="panel-label-size"  style="color: rgb(95, 95, 95)">Detalhes do curso.</p>
+        <span style="cursor: pointer;" [routerLink]="['/cursos/home']">
+          <i class="fa fa-hand-o-left" aria-hidden="true"></i> Voltar para cursos
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="about-contact-text-about">
+        <label style="font-size: 30px; font-weight: 500; color: rgb(95, 95, 95);">Curso:  {{numero}}</label>
+        <hr style="background-color:black">
+        <p class="panel-text-size" style="color: rgb(95, 95, 95)">O Objetivo central desta aba sobre é informar, ou seja, instruir o cliente
+          sobre 'O QUE?', 'COMO' ou até mesmo o 'POR QUE?' seu curso existe, desta forma uma conexão maior é estabelecida entre fornecedor e comprador,
+          assim, possivelmente o número de vendas tende a ser maior graças a está pagina.</p>
+      </div>
+
+    </div>
+    <div class="button-curso-box" style="margin-top: 50px;">
+      <button style="margin: 5px; background-color: #6cb575; color: white;" type="button" class="btn curso-button"
+       (click)="verificaLogin()">
+        Comprar
+      </button>
+    </div>
+  </div>
+</div>

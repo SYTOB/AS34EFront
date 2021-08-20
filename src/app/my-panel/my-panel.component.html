@@ -1,0 +1,41 @@
+<div class="container-base hRedContainerHeader">
+  <label>Meu Painel</label>
+</div>
+
+<div class="container-base hSubBlueContainer-panel-courses">
+  <div class="row panel-row">
+
+    <div class="col-xl-2 col-lg-3 col-md-3">
+      <button style="margin:5px" type="button"
+      class="btn panel-button" [routerLink]="['/painel/cursos']" [routerLinkActive]="['is-active-button']">
+      <i class="fa fa-graduation-cap" aria-hidden="true"></i> Meus Cursos</button>
+    </div>
+
+    <div class="col-xl-2 col-lg-3 col-md-3">
+      <button style="margin:5px" type="button"
+
+      class="btn panel-button" [routerLink]="['/painel/dados']" [routerLinkActive]="['is-active-button']">
+      <i class="fa fa-id-card-o" aria-hidden="true"></i> Meus Dados</button>
+    </div>
+
+    <div class="col-xl-2 col-lg-3 col-md-3">
+      <button style="margin:5px" type="button"
+
+      class="btn panel-button" [routerLink]="['/painel/certificados']" [routerLinkActive]="['is-active-button']">
+      <i class="fa fa-certificate" aria-hidden="true"></i> Meus certificados</button>
+    </div>
+
+    <div class="offset-xl-4 col-xl-2 col-lg-3 col-md-3">
+      <button style="margin:5px" type="button"
+      class="btn panel-button" [routerLink]="['/painel/cadastrar']" [routerLinkActive]="['is-active-button']" >
+      <i class="fa fa-address-book-o" aria-hidden="true"></i> Cadastrar Usuário</button>
+    </div>
+
+
+
+  </div>
+  <section class="panel-section">
+    <router-outlet></router-outlet>
+  </section>
+
+</div>

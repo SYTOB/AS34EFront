@@ -1,0 +1,50 @@
+<div class="container-base hSubBlueContainer-cursos">
+
+  <div class="about-contact-head">
+
+    <div class="contact-about-height-label-courses row" style="padding-right: 80px">
+
+      <div class="col-xl-3 col-lg-3">
+        <p class="panel-label-size" style="color: rgb(95, 95, 95)">Cursos Disponiveis.</p>
+      </div>
+      <div class="offset-lg-7 col-xl-2 col-lg-2 ">
+        <button
+          style="margin: 5px"
+          type="button"
+          class="btn panel-button"
+          [routerLink]="['/cursos/registrarCurso']"
+          [routerLinkActive]="['is-active-button']"
+        >
+          Cadastrar Curso
+        </button>
+      </div>
+    </div>
+
+    <div>
+      <ul class="row" style="list-style-type: none; padding-left: 0;">
+        <li *ngFor="let item of count">
+          <div class="curso-box">
+            <div class="label-curso-box">
+              <label class="label-curso-box-write">{{item}}</label>
+            </div>
+
+            <hr style="background-color: white; width: 200px" />
+
+            <div class="description-curso-box">
+              <p class="description-curso-box-write">
+                Descrição detalhada referente ao curso
+              </p>
+            </div>
+            <div class="button-curso-box">
+              <button style="margin: 5px" type="button" class="btn curso-button" [routerLink]="['/cursos/detalheCurso/',item]" >
+                Começar
+              </button>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+</div>

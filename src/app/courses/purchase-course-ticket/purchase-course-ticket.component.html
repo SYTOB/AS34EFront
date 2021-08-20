@@ -1,0 +1,252 @@
+<div class="container-base hSubBlueContainer-purchase-ticket">
+  <div class="about-contact-head">
+    <div class="contact-about-height-label" style="padding-right: 80px">
+      <div >
+        <p class=" panel-label-size"  style="color: rgb(95, 95, 95)">Comprar Curso: {{numero}} - Boleto</p>
+        <span style="cursor: pointer;" [routerLink]="['/cursos/detalheCurso/',numero]">
+          <i class="fa fa-hand-o-left" aria-hidden="true"></i> Voltar para detalhes do curso
+        </span>
+        <div class="row ticketOrCard-box">
+
+          <div class="col-xl-12" >
+            <input type="checkbox" class=" checkbox-round" id="cartao" name="Cartão de crédito" value="cartao"
+            [routerLink]="['/cursos/comprarCursoCard/',numero]" [routerLinkActive]="['is-active-button-round']"
+            >
+            <label class="font-size-ticketOrCard"  style="color: rgb(95, 95, 95)">
+              Cartão de crédito/débito - <i class="fa fa-credit-card" aria-hidden="true"></i></label>
+          </div>
+          <div class="col-xl-12">
+            <input type="checkbox" class=" checkbox-round" id="cartao" name="Cartão de crédito" value="cartao"
+            [routerLink]="['/cursos/comprarCursoBoleto/',numero]" [routerLinkActive]="['is-active-button-round']"
+            >
+            <label  class="font-size-ticketOrCard"  style="color: rgb(95, 95, 95)">
+              Boleto - <i class="fa fa-file-o" aria-hidden="true"></i> </label>
+          </div>
+
+          <br>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="row margin-form-buy">
+      <form [formGroup]="formulario" (ngSubmit)="onSubmit()" style="width: 100%;" >
+        <div class="row">
+          <div flex class="col-xl-4 col-lg-4 col-md-4">
+            <div class="form-group">
+              <mat-form-field
+                class="example-full-width"
+                style="font-size: 20px; width: 100%;"
+                appearance="fill"
+              >
+                <mat-label>Nome</mat-label>
+                <input
+                  id="nome"
+                  formControlName="nome"
+                  matInput
+                  placeholder="Nome"
+                  type="text"
+                />
+                <mat-error *ngIf="hasError('nome')"
+                  >Campo obrigatório.</mat-error
+                >
+                <mat-error *ngIf="hasError('nome', 'minlength')"
+                  >Minímo de 3 caracteres.</mat-error
+                >
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div flex class="col-xl-4 col-lg-4 col-md-4">
+            <div class="form-group">
+
+              <mat-form-field class="example-full-width" style="font-size: 20px; width: 100%;" appearance="fill">
+                <mat-label>Email</mat-label>
+                <input id="email" formControlName="email" matInput placeholder="nome@email.com" type="text" >
+                <mat-error *ngIf="hasError('email')">Campo obrigatório.</mat-error>
+                <mat-error *ngIf="hasError('email', 'email')">Email invalido.</mat-error>
+                <mat-error *ngIf="hasError('email', 'emailInvalido')">Email ja existe.</mat-error>
+
+            </mat-form-field>
+
+            </div>
+          </div>
+
+
+
+        </div>
+
+        <div class="row" style="margin-top: 30px; ">
+          <div flex class="col-xl-4 col-lg-4 col-md-4">
+            <div class="form-group">
+
+              <mat-form-field class="example-full-width" style="font-size: 20px; width: 100%;" appearance="fill">
+                <mat-label>CPF</mat-label>
+                <input mask="000.000.000-99" id="cpfCnpj" formControlName="cpfCnpj" matInput placeholder="" type="text" >
+                <mat-error *ngIf="hasError('cpfCnpj')">Campo obrigatório.</mat-error>
+
+            </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+
+
+        <label style="color: gray; font-size:25px; margin-top: 100px; ">Endereço</label>
+        <hr>
+
+        <div class="row" style="margin-top: 30px; ">
+          <div flex class="col-xl-4 col-lg-4 col-md-4">
+            <div class="form-group">
+
+              <mat-form-field class="example-full-width" style="font-size: 20px; width: 100%;" appearance="fill">
+                  <mat-label>CEP</mat-label>
+                  <input mask="00000-000" id="cep" formControlName="cep" matInput placeholder="" type="text" >
+                  <mat-error *ngIf="hasError('cep')">Campo obrigatório.</mat-error>
+
+              </mat-form-field>
+
+            </div>
+          </div>
+
+          <div flex class="col-xl-8 col-lg-8 col-md-8">
+            <div class="form-group">
+
+              <mat-form-field class="example-full-width" style="font-size: 20px; width: 100%;" appearance="fill">
+                  <mat-label>Endereço completo</mat-label>
+                  <input id="endereco" formControlName="endereco" matInput placeholder="" type="text" >
+                  <mat-error *ngIf="hasError('endereco')">Campo obrigatório.</mat-error>
+
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top: 30px; ">
+
+          <div flex class="col-xl-4 col-lg-4 col-md-4">
+            <div class="form-group">
+
+              <mat-form-field class="example-full-width" style="font-size: 20px; width: 100%;" appearance="fill">
+                  <mat-label>Número</mat-label>
+                  <input id="numero" formControlName="numero" matInput placeholder="" type="text" >
+                  <mat-error *ngIf="hasError('numero')">Campo obrigatório.</mat-error>
+
+              </mat-form-field>
+
+            </div>
+          </div>
+          <div flex class="col-xl-4 col-lg-4 col-md-4">
+            <div class="form-group">
+
+              <mat-form-field class="example-full-width" style="font-size: 20px; width: 100%;" appearance="fill">
+                  <mat-label>Complemento</mat-label>
+                  <input id="complemento" formControlName="complemento" matInput placeholder="" type="textd" >
+                  <mat-error *ngIf="hasError('complemento')">Campo obrigatório.</mat-error>
+
+              </mat-form-field>
+
+            </div>
+          </div>
+          <div flex class="col-xl-4 col-lg-4 col-md-4">
+            <div class="form-group">
+
+              <mat-form-field class="example-full-width" style="font-size: 20px; width: 100%;" appearance="fill">
+                  <mat-label>Bairro</mat-label>
+                  <input id="bairro" formControlName="bairro" matInput placeholder="" type="text" >
+                  <mat-error *ngIf="hasError('bairro')">Campo obrigatório.</mat-error>
+
+              </mat-form-field>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top: 30px; ">
+
+          <div flex class="col-xl-4 col-lg-4 col-md-4">
+            <div class="form-group">
+              <mat-form-field
+                class="example-full-width"
+                style="font-size: 20px; width: 100%"
+                appearance="fill"
+              >
+                <mat-label>Estado</mat-label>
+
+                <mat-select formControlName="estado" id="estado" (selectionChange)="loadCities()">
+
+                  <mat-option *ngFor="let estate of listStates" [value]="estate .uf" >
+                    {{ estate .name }} - {{ estate .uf }}
+                  </mat-option>
+
+                </mat-select>
+
+                <mat-error *ngIf="hasError('estado')"
+                  >Campo obrigatório</mat-error
+                >
+
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div flex class="col-xl-4 col-lg-4 col-md-4">
+            <div class="form-group">
+              <mat-form-field
+                class="example-full-width"
+                style="font-size: 20px; width: 100%"
+                appearance="fill"
+              >
+                <mat-label>Cidade</mat-label>
+                <mat-select formControlName="cidade" id="cidade">
+                  <mat-option *ngFor="let cidade of listCidades" [value]="cidade.name">
+                    {{ cidade.name }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="hasError('cidade')"
+                  >Campo obrigatório</mat-error
+                >
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+
+
+        <div style="margin-top: 100px; margin-bottom: 100px; width: 50%">
+          <label style="color: rgb(95, 95, 95); font-size: 30px;"> Detalhes do pedido</label>
+          <hr style="background-color: rgb(95, 95, 95);  ">
+          <div class="row">
+            <div class="col-xl-3 col-lg-3 col-md-3">
+              <label style="color: rgb(95, 95, 95); font-size: 25px;">Curso: {{numero}}</label>
+            </div>
+            <div class="offset-xl-6 col-xl-3 col-lg-3 col-md-3">
+              <label style="color: rgb(95, 95, 95); font-size: 25px;">R$500,00</label>
+
+            </div>
+
+          </div>
+        </div>
+
+
+
+
+        <div
+          class="row"
+          style="height: 100px; margin-top: 25px; padding-top: 15px"
+        >
+          <div flex class="col-xl-12">
+            <button
+              style="margin: 5px; background-color: #6cb575; color:white;"
+              type="submit"
+              class="btn button-register-adm"
+            >
+              Gerar Boleto <i class="fa fa-file-o" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+

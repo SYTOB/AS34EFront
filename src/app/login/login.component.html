@@ -1,0 +1,95 @@
+<div class="container-base redContainer" >
+
+  <div class="container-text" style="background-color: transparent;  text-align: center; vertical-align: middle; ">
+
+    <div class="container boxLogin">
+
+      <div class="container headerLogin">
+
+        <div class="row headerLoginSub">
+
+          <div flex class="col-lg-12 col-md-6 loginStyleText">
+            <p>Login</p>
+          </div>
+
+          <div flex class="col-lg-12 col-md-6 " style=" margin-top: 10px; font-size: 25px; font-weight: 400;">
+            <p>Bem vindo</p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="containerFormLogin " style="text-align: center;">
+        <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+
+            <div class="row" >
+              <div flex class="col-lg-12 col-md-12">
+                    <div class="form-group">
+
+                      <mat-form-field class="example-full-width" style="font-size: 20px;" appearance="fill">
+                          <mat-label>Email</mat-label>
+                          <input id="email" formControlName="email" matInput placeholder="nome@email.com" type="text" >
+                          <mat-error *ngIf="hasError('email')">Email é obrigatório.</mat-error>
+                          <mat-error *ngIf="hasError('email', 'email')">Email invalido.</mat-error>
+                          <mat-error *ngIf="hasError('email', 'emailInvalido')">Email ja existe.</mat-error>
+
+                      </mat-form-field>
+
+                    </div>
+              </div>
+            </div>
+            <div class="row" >
+              <div flex class="col-lg-12 col-md-12">
+                <div class="form-group">
+
+                  <mat-form-field class="example-full-width" style="font-size: 20px;" appearance="fill">
+                      <mat-label>Senha</mat-label>
+                      <input id="senha" formControlName="senha" matInput placeholder="senha" type="password" >
+                      <mat-error *ngIf="hasError('senha')">Senha é obrigatória.</mat-error>
+                      <mat-error *ngIf="hasError('senha', 'minlength')">Minímo de 3 caracteres.</mat-error>
+                      <mat-error *ngIf="hasError('senha', 'maxlength')">Máximo de 30 caracteres.</mat-error>
+                  </mat-form-field>
+
+                </div>
+
+              </div>
+            </div>
+
+            <div class="row" style="height: 100px; margin-top: 25px; padding-top: 15px;">
+              <div flex class="col-lg-12 col-md-12">
+
+                    <button style="margin:5px" type="submit" style="font-size: 20px; width: 160px; border-radius: 30px;" class="btn btn-info">Login</button>
+
+              </div>
+            </div>
+
+        </form>
+      </div>
+
+
+      <div class="container" style="text-align: center; height: 150px; align-content: center; align-items: center;">
+
+        <div class="row" style="padding-top: 20px; padding-left: 30px; align-items: center;  color:rgb(92, 92, 92)">
+
+          <div flex class="col-lg-6 col-md-6" style="font-size: 15px; font-weight: 350;">
+            <p >Esqueci minha senha</p>
+          </div>
+
+          <div flex class="col-lg-6 col-md-6 rgButtonLogin" style="font-size: 25px; font-weight: 400;">
+            <p [routerLink]="['/cadastro']">Cadastrar-se</p>
+          </div>
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+
+</div>

@@ -1,0 +1,86 @@
+<form [formGroup]="formulario" >
+
+  <div class="row" >
+    <div flex class="col-xl-4 col-lg-4 col-md-6">
+          <div class="form-group">
+
+            <mat-form-field class="example-full-width" style="font-size: 20px;" appearance="fill">
+                <mat-label>Nome</mat-label>
+                <input id="nome" formControlName="nome"  matInput placeholder="Nome" type="text" >
+                <mat-error *ngIf="hasError('nome', 'minlength')">Minímo de 3 caracteres.</mat-error>
+
+            </mat-form-field>
+
+          </div>
+    </div>
+
+    <div flex class="col-xl-4 col-lg-4 col-md-6">
+      <div class="form-group">
+
+        <mat-form-field class="example-full-width" style="font-size: 20px;" appearance="fill">
+            <mat-label>Email</mat-label>
+            <input id="email" formControlName="email" matInput placeholder="nome@email.com" type="text" >
+            <mat-error *ngIf="hasError('email', 'email')">Email invalido.</mat-error>
+            <mat-error *ngIf="hasError('email', 'emailInvalido')">Email ja existe.</mat-error>
+
+        </mat-form-field>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row" >
+    <div flex class="col-xl-4 col-lg-4 col-md-6">
+      <div class="form-group">
+
+        <mat-form-field class="example-full-width" style="font-size: 20px;" appearance="fill">
+            <mat-label>Senha Atual</mat-label>
+            <input id="senha" formControlName="senhaAtual" matInput placeholder="Senha Atual" type="password" >
+            <mat-error *ngIf="hasError('senha', 'minlength')">Minímo de 3 caracteres.</mat-error>
+            <mat-error *ngIf="hasError('senha', 'maxlength')">Máximo de 30 caracteres.</mat-error>
+        </mat-form-field>
+
+      </div>
+
+    </div>
+
+    <div flex class="col-xl-4 col-lg-4 col-md-6">
+          <div class="form-group">
+
+            <mat-form-field class="example-full-width" style="font-size: 20px;" appearance="fill">
+                <mat-label>Nova Senha</mat-label>
+                <input id="confirmarSenha" formControlName="novaSenha" matInput placeholder="Nova Senha" type="password" >
+                <mat-error *ngIf="hasError('novaSenha', 'minlength')">Minímo de 3 caracteres.</mat-error>
+                <mat-error *ngIf="hasError('novaSenha', 'maxlength')">Máximo de 30 caracteres.</mat-error>
+
+            </mat-form-field>
+
+          </div>
+    </div>
+
+    <div flex class="col-xl-4 col-lg-4 col-md-6">
+      <div class="form-group">
+
+        <mat-form-field class="example-full-width" style="font-size: 20px;" appearance="fill">
+            <mat-label>Confirmar Nova Senha</mat-label>
+            <input id="confirmarNovaSenha" formControlName="confirmarNovaSenha" matInput placeholder="Confirmar Nova Senha" type="password" >
+            <mat-error *ngIf="hasError('confirmarNovaSenha', 'equalsTo')">Senhas não são iguais.</mat-error>
+
+        </mat-form-field>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row" style="height: 100px; margin-top: 25px; padding-top: 15px;">
+    <div flex class="col-xl-12">
+
+          <button style="margin:5px" type="submit"
+          style="font-size: 20px; width: 200px; border-radius: 30px; background-color: #6cb575; color: white" class="btn ">Salvar Alterações</button>
+
+    </div>
+  </div>
+
+</form>

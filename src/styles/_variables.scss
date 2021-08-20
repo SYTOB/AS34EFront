@@ -1,0 +1,29 @@
+$grid-columns:      12;
+$grid-gutter-width: 30px;
+
+$fa-font-path: "~font-awesome//fonts";
+
+$grid-breakpoints: (
+  // Tela extra small (muito pequena, no português)
+  xs: 0,
+  // Tela small (pequena, no português)
+  sm: 576px,
+  // Tela média
+  md: 960px,
+  // Tela large (grande, no português)
+  lg: 1366px,
+  // Tela extra large (muito grande, no português)
+  xl: 1440px
+);
+
+$container-max-widths: (
+  sm: 576px,
+  md: 960px,
+  lg: 1366px,
+  xl: 1440px
+);
+
+$fa-font-path: "~font-awesome//fonts";
+
+
+$cor: #A2AD91;

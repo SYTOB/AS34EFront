@@ -1,0 +1,155 @@
+<div class="container-base hSubBlueContainer-cursos">
+  <div class="about-contact-head">
+    <div class="contact-about-height-label" style="padding-right: 80px">
+      <div>
+        <p class="panel-label-size" style="color: rgb(95, 95, 95)">Editar Curso - {{numero}}</p>
+        <span style="cursor: pointer;" [routerLink]="['/painel/cursos']" [routerLinkActive]="['is-active-button']">
+          <i class="fa fa-hand-o-left" aria-hidden="true"></i> Voltar para meus cursos
+        </span>
+      </div>
+    </div>
+
+    <div class="row">
+      <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div flex class="col-xl-4 col-lg-4 col-md-6">
+            <div class="form-group">
+              <mat-form-field
+                class="example-full-width"
+                style="font-size: 20px"
+                appearance="fill"
+              >
+                <mat-label>Nome</mat-label>
+                <input
+                  id="nome"
+                  formControlName="nome"
+                  matInput
+                  placeholder="Nome"
+                  type="text"
+                />
+                <mat-error *ngIf="hasError('nome')"
+                  >Nome é obrigatório.</mat-error
+                >
+                <mat-error *ngIf="hasError('nome', 'minlength')"
+                  >Minímo de 3 caracteres.</mat-error
+                >
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div flex class="col-xl-4 col-lg-4 col-md-6">
+            <div class="form-group">
+              <mat-form-field
+                class="example-full-width"
+                style="font-size: 20px"
+                appearance="fill"
+              >
+                <mat-label>Valor</mat-label>
+                <input
+                  id="valor"
+                  formControlName="valor"
+                  matInput
+                  placeholder="R$00,00"
+                  type="text"
+                />
+                <mat-error *ngIf="hasError('valor')"
+                  >Valor é obrigatório</mat-error
+                >
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div flex class="col-xl-2 col-lg-2 col-md-2">
+            <div class="form-group">
+              <mat-form-field
+                class="example-full-width"
+                style="font-size: 20px; width: 180px"
+                appearance="fill"
+              >
+                <mat-label>Status</mat-label>
+                <mat-select formControlName="status" id="status">
+                  <mat-option *ngFor="let item of listStatus" [value]="item">
+                    {{ item }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="hasError('status')"
+                  >Status é obrigatório</mat-error
+                >
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div flex class="col-xl-2 col-lg-22 col-md-2">
+            <div class="form-group">
+              <mat-form-field
+                class="example-full-width"
+                style="font-size: 20px; width: 180px"
+                appearance="fill"
+              >
+                <mat-label>Periodo</mat-label>
+                <mat-select formControlName="periodo" id="periodo">
+                  <mat-option *ngFor="let item of listPeriodo" [value]="item">
+                    {{ item }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="hasError('periodo')"
+                  >Periodo é obrigatório</mat-error
+                >
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top: 30px">
+          <div flex class="col-xl-4 col-lg-4 col-md-6">
+            <div
+              class="form-group"
+              style="
+                background-color: white;
+                box-shadow: 0 6px 6px -8px black;
+                height: 80px;
+                width: 500px;
+                border-radius: 0px 30px 30px 0px;
+                padding: 10px;
+              "
+            >
+              <mat-label
+                style="
+                  font-size: 20px;
+                  font-weight: 400;
+                  color: rgb(110, 110, 110);
+                "
+                >Descrição</mat-label
+              >
+              <input
+                id="descricao"
+                formControlName="descricao"
+                matInput
+                placeholder="Informe uma descrição par ao curso."
+                type="text"
+              />
+              <mat-error *ngIf="hasError('descricao')"
+                >Descrição é obrigatória.</mat-error
+              >
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="row"
+          style="height: 100px; margin-top: 25px; padding-top: 15px"
+        >
+          <div flex class="col-xl-12">
+            <button
+              style="margin: 5px; background-color: #6cb575; color: white;"
+              type="submit"
+              class="btn button-register-adm"
+            >
+              Confirmar Alterações
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

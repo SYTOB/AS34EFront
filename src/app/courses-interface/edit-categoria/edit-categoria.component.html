@@ -1,0 +1,55 @@
+<div style="width:820px; height:520px; border-radius: 30px 55px 30px 60px;
+background-color: white; box-shadow: 0 7px 6px -7px black; padding: 30px 0px 0px 50px;">
+
+  <label style="color:#FE4E4E; font-weight: 500; font-size: 30px;">Editar Categoria - {{nomeCategoria}}</label>
+
+
+
+  <div class="row" style="margin-top: 50px;">
+
+    <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div flex class="col-xl-12 col-lg-12 col-md-12">
+          <div class="form-group">
+            <mat-form-field
+              class="example-full-width"
+              style="font-size: 20px; width: 100%"
+              appearance="fill"
+            >
+              <mat-label>Titulo</mat-label>
+              <input
+                id="titulo"
+                formControlName="titulo"
+                matInput
+
+                placeholder="Titulo"
+                type="text"
+              />
+              <mat-error *ngIf="hasError('titulo', 'minlength')"
+                >Minímo de 3 caracteres.</mat-error>
+              <mat-error *ngIf="hasError('titulo', 'maxlength')"
+              >Maximo de 50 caracteres.</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+
+        <div flex class="col-xl-12 col-lg-12 col-md-12" style="margin-top: 100px; text-align: center;">
+          <button
+          style="margin: 5px; background-color: #f5ae64; color: white;"
+          type="submit"
+          class="btn button-register-adm"
+        >
+          Editar
+        </button>
+        </div>
+
+</div>
+
+<div class="col-xl-4 col-lg-4 col-sm-4 col-md-4" style="margin-top: 80px;" >
+
+  <button  type="button" class="btn course-video-button"
+  [routerLink]="['/coursesInterface/',nomeCurso,idCurso]" [routerLinkActive]="['is-active-button']">Voltar
+  </button>
+
+</div>
