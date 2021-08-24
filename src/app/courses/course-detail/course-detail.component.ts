@@ -1,3 +1,4 @@
+import { CoursesService } from './../../shared/services/courses.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -13,7 +14,9 @@ export class CourseDetailComponent implements OnInit {
 
   numero!: any;
 
-  constructor(private activeRoute: ActivatedRoute, private router: Router) { }
+  detalhesCurso: any;
+
+  constructor(private activeRoute: ActivatedRoute, private router: Router, private courseService: CoursesService) { }
 
   ngOnInit() {
     this.inscricao = this.activeRoute.params.subscribe(
@@ -22,6 +25,27 @@ export class CourseDetailComponent implements OnInit {
         console.log(info['id']);
       }
     );
+
+    this.courseService
+    .getCurso(
+      this.numero
+    )
+    .subscribe(
+      (success: any) => {
+        console.log(success);
+
+        this.detalhesCurso = success;
+
+      },
+      (error) => {
+
+        console.log(error);
+        alert("Erro!");
+      }
+    );
+
+
+
   }
 
   ngOnDestroy(){

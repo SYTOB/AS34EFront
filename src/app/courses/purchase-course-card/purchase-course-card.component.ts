@@ -1,11 +1,13 @@
-import { Subscription } from 'rxjs';
+import { CoursesService } from './../../shared/services/courses.service';
+import { Subscription, timer } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ValidEmailService } from 'src/app/shared/services/validEmail.service';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { NotifyService } from 'src/app/shared/services/notify.service';
 
 @Component({
   selector: 'app-purchase-course-card',
@@ -15,15 +17,28 @@ import { map } from 'rxjs/operators';
 export class PurchaseCourseCardComponent implements OnInit {
 
   inscricao!: Subscription;
+  inscricaoDelay!: Subscription;
   numero: any;
 
   formulario!: FormGroup;
+
+  detalhesCurso: any;
+
+  source = timer(500);
+
+  aux: any = localStorage.getItem('user');
+  user: any = JSON.parse(this.aux);
+
+  public loading: boolean = true;
 
   constructor(
     private activeRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
     private verificaEmailService: ValidEmailService,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private courseSevice: CoursesService,
+    private notifyService: NotifyService,
+    private route: Router
     ) { }
 
   ngOnInit() {
@@ -34,13 +49,38 @@ export class PurchaseCourseCardComponent implements OnInit {
       }
     );
 
+
+    this.inscricaoDelay = this.source.subscribe(
+      (info) => this.loading = false
+    )
+
+
+
+    this.courseSevice
+    .getCurso(
+      this.numero
+    )
+    .subscribe(
+      (success: any) => {
+        console.log(success);
+
+        this.detalhesCurso = success;
+
+      },
+      (error) => {
+
+        console.log(error);
+        alert("Erro!");
+      }
+    );
+
     this.formulario = this.formBuilder.group({
-      nome: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(50)] ],
+      nome: [this.user.nome_usuario, [Validators.required, Validators.minLength(3), Validators.maxLength(50)] ],
       cpf: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(50)] ],
       numeroCartao: [null, [Validators.required] ],
-      periodo: [null,[Validators.required]],
-      MM: [null, [Validators.required]],
-      AA: [null, [Validators.required] ],
+
+      MM: [null, [Validators.required, Validators.maxLength(12)]],
+      AA: [null, [Validators.required, Validators.maxLength(50)] ],
       codigoSeguranca: [null, [Validators.required] ]
     });
 
@@ -67,17 +107,30 @@ export class PurchaseCourseCardComponent implements OnInit {
 
     if(this.formulario.valid) {
 
-      // this.fazerLogin();
 
-      this.httpClient
-        .post('https://httpbin.org/post', this.formulario.value)
+      this.courseSevice
+        .buyCurso(
+          this.numero,
+          this.user.email_usuario, // id usuario
+          'CC',
+          '',
+          '',
+          '',
+          '',
+          '',
+          '',
+          ''
+        )
         .subscribe(
-          dados => {
-            console.log(dados);
-            //reseta o form
-            this.formulario.reset();
-        },
-        (error: any) => alert('Erro!')
+          (success: any) => {
+            console.log(success);
+            this. showToasterSuccess();
+            this.route.navigate(['/cursos/home']);
+          },
+          (error) => {
+            console.log(error);
+            this.showToasterfailed();
+          }
         );
 
     }
@@ -96,7 +149,23 @@ export class PurchaseCourseCardComponent implements OnInit {
 
   ngOnDestroy(){
     this.inscricao.unsubscribe();
+    this.inscricaoDelay.unsubscribe();
 
   }
+
+  showToasterSuccess(){
+    console.log("teste");
+    const titulo = "Sucesso";
+    const message = "Compra efetuada.";
+    this.notifyService.showSuccess(message, titulo);
+  }
+
+  showToasterfailed(){
+    console.log("teste");
+    const titulo = "Erro!";
+    const message = "Algo de errado ocorreu, por favor tente novamente.";
+    this.notifyService.showError(message, titulo);
+  }
+
 
 }

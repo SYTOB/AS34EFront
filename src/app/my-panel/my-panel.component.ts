@@ -8,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
 export class MyPanelComponent implements OnInit {
 
 
+  aux: any = localStorage.getItem('user');
+  user: any = JSON.parse(this.aux);
 
   constructor() { }
 

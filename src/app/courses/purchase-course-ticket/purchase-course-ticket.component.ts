@@ -1,12 +1,19 @@
+import { Subscription } from 'rxjs/internal/Subscription';
 import { CitiesService } from './../../shared/services/cities.service';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import {  timer } from 'rxjs';
+
 import { map } from 'rxjs/operators';
 import { StatesService } from 'src/app/shared/services/states.service';
 import { ValidEmailService } from 'src/app/shared/services/validEmail.service';
+import { CoursesService } from 'src/app/shared/services/courses.service';
+import { NotifyService } from 'src/app/shared/services/notify.service';
+
+
+
 
 @Component({
   selector: 'app-purchase-course-ticket',
@@ -16,12 +23,18 @@ import { ValidEmailService } from 'src/app/shared/services/validEmail.service';
 export class PurchaseCourseTicketComponent implements OnInit {
 
   inscricao!: Subscription;
+  inscricaoDelay!: Subscription;
+
   inscricaoStates!: Subscription;
   inscricaoCities!: Subscription;
 
   numero: any;
 
   auxState:any;
+
+  auxiliar: any = true;
+
+  public loading: boolean = true;
 
   formulario!: FormGroup;
 
@@ -31,6 +44,14 @@ export class PurchaseCourseTicketComponent implements OnInit {
   listStates!: any[];
   listCidades!: any[];
 
+  detalhesCurso: any;
+
+  source = timer(500);
+
+
+
+
+
 
   constructor(
     private activeRoute: ActivatedRoute,
@@ -38,14 +59,45 @@ export class PurchaseCourseTicketComponent implements OnInit {
     private verificaEmailService: ValidEmailService,
     private httpClient: HttpClient,
     private states: StatesService,
-    private cities: CitiesService
+    private cities: CitiesService,
+    private courseSevice: CoursesService,
+    private notifyService: NotifyService,
+    private route: Router
+
     ) { }
 
   ngOnInit() {
+
     this.inscricao = this.activeRoute.params.subscribe(
       (info) => {
+
         this.numero = info['id'];
+
         console.log(info['id']);
+      }
+    );
+
+    this.inscricaoDelay = this.source.subscribe(
+      (info) => this.loading = false
+    )
+
+    this.courseSevice
+    .getCurso(
+      this.numero
+    )
+    .subscribe(
+      (success: any) => {
+        // console.log(success);
+
+        this.detalhesCurso = success;
+
+
+
+      },
+      (error) => {
+
+        console.log(error);
+        alert("Erro!");
       }
     );
 
@@ -57,9 +109,9 @@ export class PurchaseCourseTicketComponent implements OnInit {
 
 
     this.formulario = this.formBuilder.group({
-      nome: [this.user.nickname, [Validators.required, Validators.minLength(3), Validators.maxLength(50)] ],
-      email: ["diovanips@hotmail.com", [Validators.required] ],
-      cpfCnpj: ["116.458.721-89",[Validators.required]],
+      nome: [this.user.nome_usuario, [Validators.required, Validators.minLength(3), Validators.maxLength(50)] ],
+      email: [this.user.email_usuario, [Validators.required] ],
+      cpfCnpj: [null,[Validators.required]],
       cep: [null, [Validators.required]],
       endereco: [null, [Validators.required] ],
       numero: [null, [Validators.required] ],
@@ -74,7 +126,6 @@ export class PurchaseCourseTicketComponent implements OnInit {
   loadCities(){
     this.inscricaoStates = this.cities.lista(this.formulario.get('estado')?.value).subscribe(
       (cidades: any) => this.listCidades = cidades
-
     )
   }
 
@@ -99,17 +150,29 @@ export class PurchaseCourseTicketComponent implements OnInit {
 
     if(this.formulario.valid) {
 
-      // this.fazerLogin();
-
-      this.httpClient
-        .post('https://httpbin.org/post', this.formulario.value)
+      this.courseSevice
+        .buyCurso(
+          this.numero,
+          this.formulario.get('email')?.value,
+          'BO',
+          this.formulario.get('endereco')?.value,
+          this.formulario.get('numero')?.value,
+          this.formulario.get('complemento')?.value,
+          this.formulario.get('bairro')?.value,
+          this.formulario.get('estado')?.value,
+          this.formulario.get('cidade')?.value,
+          this.formulario.get('cep')?.value
+        )
         .subscribe(
-          dados => {
-            console.log(dados);
-            //reseta o form
-            this.formulario.reset();
-        },
-        (error: any) => alert('Erro!')
+          (success: any) => {
+            console.log(success);
+            this. showToasterSuccess();
+            this.route.navigate(['/cursos/home']);
+          },
+          (error) => {
+            console.log(error);
+            this.showToasterfailed();
+          }
         );
 
     }
@@ -128,6 +191,7 @@ export class PurchaseCourseTicketComponent implements OnInit {
 
   ngOnDestroy(){
     this.inscricao.unsubscribe();
+    this.inscricaoDelay.unsubscribe();
 
     if(this.inscricaoStates){
       this.inscricaoStates.unsubscribe();
@@ -139,5 +203,20 @@ export class PurchaseCourseTicketComponent implements OnInit {
 
 
   }
+
+  showToasterSuccess(){
+    console.log("teste");
+    const titulo = "Sucesso";
+    const message = "Compra efetuada.";
+    this.notifyService.showSuccess(message, titulo);
+  }
+
+  showToasterfailed(){
+    console.log("teste");
+    const titulo = "Erro!";
+    const message = "Algo de errado ocorreu, por favor tente novamente.";
+    this.notifyService.showError(message, titulo);
+  }
+
 
 }

@@ -1,7 +1,12 @@
-import { Subscription } from 'rxjs';
+import { AttCatVidService } from './../../shared/services/att-cat-vid.service';
+import { InfoVideoService } from './../../shared/services/info-video.service';
+import { Subject, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { takeUntil } from 'rxjs/operators';
+import { ModalComponent } from 'src/app/shared/modal/modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 export interface Video {
@@ -27,81 +32,114 @@ export class CoursesInterfaceVideoComponent implements OnInit {
 
   inscricao!: Subscription;
 
-  idCurso: any;
+  idVideo: any;
+
+  videoCap: any;
 
   urlCurso: any;
 
+  idEtapa: any;
+
+
   nomeCurso: any;
 
-  listaVideos: Video[] = [
-    { id: 1, titulo: 'Introdução ao Angular', url: 'https://www.youtube.com/embed/tPOMG0D57S0',categoria: 'Introdução', visto: true},
-    { id: 2, titulo: 'Ambiente de Desenvolvimento', url: 'https://www.youtube.com/embed/XxPjcMTZz5w',categoria: 'Introdução', visto: true},
-    { id: 3, titulo: 'Hello World', url: 'https://www.youtube.com/embed/wBrIT2Z8t5I',categoria: 'Introdução', visto: true},
-    { id: 4, titulo: 'Introdução a typescript', url: 'https://www.youtube.com/embed/cNJVzgUH0gA',categoria: 'Introdução', visto: false},
-    { id: 5, titulo: 'Modulos(ngModule)', url: 'https://www.youtube.com/embed/3dXiZiPmt70',categoria: 'Introdução', visto: false},
+  private _destroy: Subject<any> = new Subject<any>();
 
-    { id: 6, titulo: 'Introdução a Subversão', url: 'https://www.youtube.com/embed/tPOMG0D57S0',categoria: 'Subversão', visto: true},
-    { id: 7, titulo: 'Ambiente de Subversão', url: 'https://www.youtube.com/embed/XxPjcMTZz5w',categoria: 'Subversão', visto: false},
-    { id: 8, titulo: 'Hello Subversão', url: 'https://www.youtube.com/embed/wBrIT2Z8t5I',categoria: 'Subversão', visto: false},
-    { id: 9, titulo: 'Introdução a Subversão', url: 'https://www.youtube.com/embed/cNJVzgUH0gA',categoria: 'Subversão', visto: false},
-    { id: 10, titulo: 'Modulos(Subversão)', url: 'https://www.youtube.com/embed/3dXiZiPmt70',categoria: 'Subversão', visto: false},
-
-    { id: 11, titulo: 'Introdução ao Final', url: 'https://www.youtube.com/embed/tPOMG0D57S0',categoria: 'Final', visto: false},
-    { id: 12, titulo: 'Ambiente de Final', url: 'https://www.youtube.com/embed/XxPjcMTZz5w',categoria: 'Final', visto: false},
-    { id: 13, titulo: 'Hello Final', url: 'https://www.youtube.com/embed/wBrIT2Z8t5I',categoria: 'Final', visto: false},
-    { id: 14, titulo: 'Introdução a Final', url: 'https://www.youtube.com/embed/cNJVzgUH0gA',categoria: 'Final', visto: false},
-    { id: 15, titulo: 'Modulos(Final)', url: 'https://www.youtube.com/embed/3dXiZiPmt70',categoria: 'Final', visto: false}
-
-  ];
-
-
-
-  constructor(private sanitizer: DomSanitizer, private activeRoute: ActivatedRoute) { }
+  constructor(
+    private sanitizer: DomSanitizer,
+    private activeRoute: ActivatedRoute,
+    private videoService: InfoVideoService,
+    private passaId: AttCatVidService,
+    private dialog: MatDialog) { }
 
 
 
   ngOnInit() {
-    this.activeRoute.params.subscribe(
+    this.activeRoute.params.pipe(takeUntil(this._destroy)).subscribe(
       (info) => {
-        this.idCurso = info['id'];
-        this.percorreLista(this.idCurso);
+        this.idVideo = info['idVideo'];
+
+        console.log("VIDEO-INTERFACE  ID VIDEO: ",this.idVideo);
+
+        this.passaId.visualiza(this.idVideo);
+
+        this.carregaVideo();
 
       }
     );
 
-    this.activeRoute.parent?.params.subscribe(
+    this.activeRoute.params.pipe(takeUntil(this._destroy)).subscribe(
       (info) => {
-        console.log("activeRoute: ",info['curso']);
+        this.idEtapa = info['idEtapa'];
+
+        console.log("VIDEO-INTERFACE  ID ETAPA: ",this.idEtapa);
+
+      }
+    );
+
+    this.activeRoute.parent?.params.pipe(takeUntil(this._destroy)).subscribe(
+      (info) => {
+
         this.nomeCurso = info['curso'];
-        this.percorreLista(this.idCurso);
+        console.log("VIDEO-INTERFACE NOME CURSO: ",this.nomeCurso);
+
 
       }
     );
 
+
+
+  }
+
+
+  carregaVideo(){
+
+    this.videoService
+    .getAula(
+      this.idVideo
+    )
+    .subscribe(
+      (success: any) => {
+
+
+        this.videoCap = success;
+        this.mudaUrl(this.videoCap.url_video);
+
+      },
+      (error) => {
+
+        console.log(error);
+        alert("Erro!");
+      }
+    );
   }
 
   ngOnDestroy(): void {
     this.inscricao?.unsubscribe();
+    this._destroy.next(true);
+    this._destroy.unsubscribe();
+
   }
 
 
 
   mudaUrl(url:any){
-
     this.urlVideo = this.sanitizer.bypassSecurityTrustResourceUrl(url);
 
   }
 
-  percorreLista(id:number){
+  openDialog() {
+    console.log("Dialog");
 
-    for(let i=0;i<this.listaVideos.length;i++){
+    const observable = this.videoService.deleteAula(this.idVideo);
 
-      if(this.listaVideos[i].id == this.idCurso){
-        this.urlCurso = this.listaVideos[i].url;
-        this.mudaUrl(this.urlCurso);
-      }
-    }
+    const titulo = "Excluir Video"
+
+    const mensagem = `Deseja Realmente excluir o video - ${this.videoCap.nome_video}`;
+
+    const dialog = this.dialog.open(ModalComponent, {data: { mensagem , titulo , observable },width: '500px',height: '250px'})
 
   }
+
 
 }

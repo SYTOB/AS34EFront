@@ -1,7 +1,7 @@
-import { CursosService } from './../shared/services/cursos.service';
+
 import { Component, OnInit } from '@angular/core';
 import { Curso } from '../shared/curso';
-import { FormGroup, Validators } from '@angular/forms';
+
 
 
 @Component({
@@ -11,10 +11,6 @@ import { FormGroup, Validators } from '@angular/forms';
 })
 export class CoursesComponent implements OnInit {
 
-  listaCursos!: Curso[];
-
-
-  count!: number[];
 
   constructor() { }
 

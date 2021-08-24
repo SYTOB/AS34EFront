@@ -1,9 +1,13 @@
-import { Subscription } from 'rxjs';
+import { AttCatVidService } from './../../shared/services/att-cat-vid.service';
+import { InfoVideoService } from './../../shared/services/info-video.service';
+import { Subject, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { takeUntil } from 'rxjs/operators';
+import { NotifyService } from 'src/app/shared/services/notify.service';
 
 
 export interface Video {
@@ -30,22 +34,59 @@ export class AddVideoComponent implements OnInit {
 
   nomeCurso: any;
 
+  idVideo: any;
+
+  idEtapa: any;
+
   formulario!: FormGroup;
 
-  listCategoria: string[] = ['Introdução','Subversão'];
+  listCategoria: any;
 
 
-
+  private _destroy: Subject<any> = new Subject<any>();
 
   constructor(
     private httpClient: HttpClient,
     private formBuilder: FormBuilder,
     private sanitizer: DomSanitizer,
-    private activeRoute: ActivatedRoute
+    private activeRoute: ActivatedRoute,
+    private videoService: InfoVideoService,
+    private atualiza: AttCatVidService,
+    private notifyService: NotifyService
     ) { }
 
 
   ngOnInit() {
+
+
+
+    this.activeRoute.parent?.params.pipe(takeUntil(this._destroy)).subscribe(
+      (info) => {
+        this.idCurso = info['id'];
+        console.log("ADDVideo curso ID: ",this.idCurso);
+        this.carregaCategorias();
+      }
+    );
+
+    this.activeRoute.params.pipe(takeUntil(this._destroy)).subscribe(
+      (info) => {
+        this.idEtapa = info['idEtapa'];
+        console.log("ADDVideo etapa ID: ",this.idEtapa);
+      }
+    );
+
+    this.activeRoute.params.pipe(takeUntil(this._destroy)).subscribe(
+      (info) => {
+        this.idVideo = info['idVideo'];
+        console.log("ADDVideo Video ID: ",this.idVideo);
+      }
+    );
+
+    this.activeRoute.parent?.params.pipe(takeUntil(this._destroy)).subscribe(
+      (info) => {
+        this.nomeCurso = info['curso'];
+      }
+    );
 
     this.formulario = this.formBuilder.group({
       titulo: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(50)] ],
@@ -53,27 +94,35 @@ export class AddVideoComponent implements OnInit {
       categoria: [null,[Validators.required]]
     });
 
-    this.activeRoute.params.subscribe(
-      (info) => {
-        this.idCurso = info['id'];
 
+
+  }
+
+  carregaCategorias(){
+    this.videoService
+    .getAllInfoEtapas(
+      this.idCurso
+    )
+    .subscribe(
+      (success: any) => {
+        console.log(success);
+
+        this.listCategoria = success;
+
+      },
+      (error) => {
+
+        console.log(error);
+        alert("Course Main Erro!");
       }
     );
-
-
-    this.activeRoute.parent?.params.subscribe(
-      (info) => {
-        this.nomeCurso = info['curso'];
-      }
-    );
-
-
-
   }
 
   ngOnDestroy(): void {
-
+    this._destroy.next(true);
+    this._destroy.unsubscribe();
   }
+
 
 
 
@@ -96,20 +145,33 @@ export class AddVideoComponent implements OnInit {
 
   onSubmit(){
 
+    // https://www.youtube.com/embed/G5peoF1UUCY
+
     if(this.formulario.valid) {
 
-      // this.fazerLogin();
+      console.log("Categoria: ",this.formulario.get('categoria')?.value)
 
-      this.httpClient
-        .post('https://httpbin.org/post', this.formulario.value)
-        .subscribe(
-          dados => {
-            console.log(dados);
-            //reseta o form
-            this.formulario.reset();
+      this.videoService
+      .insertNovaAula(
+        this.formulario.get('titulo')?.value,
+        this.formulario.get('url')?.value,
+        this.formulario.get('categoria')?.value,
+        this.idCurso
+
+      )
+      .subscribe(
+        (success: any) => {
+          console.log(success);
+
+          this.showToasterSuccess();
+          this.atualiza.atualiza();
+          this.formulario.reset();
         },
-        (error: any) => alert('Erro!')
-        );
+        (error) => {
+          console.log(error);
+          this.showToasterfailed();
+        }
+      );
 
     }
     else{
@@ -122,6 +184,20 @@ export class AddVideoComponent implements OnInit {
       });
     }
 
+  }
+
+  showToasterSuccess(){
+    console.log("teste");
+    const titulo = "Sucesso";
+    const message = "Video adicionado com sucesso.";
+    this.notifyService.showSuccess(message, titulo);
+  }
+
+  showToasterfailed(){
+    console.log("teste");
+    const titulo = "Erro!";
+    const message = "Algo de errado ocorreu, por favor tente novamente.";
+    this.notifyService.showError(message, titulo);
   }
 
 }

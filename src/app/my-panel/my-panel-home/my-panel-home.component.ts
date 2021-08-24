@@ -10,9 +10,13 @@ export class MyPanelHomeComponent implements OnInit {
   aux: any = localStorage.getItem('user');
   nome: any = JSON.parse(this.aux);
 
+
+
   constructor() { }
 
   ngOnInit() {
+
+
   }
 
 }

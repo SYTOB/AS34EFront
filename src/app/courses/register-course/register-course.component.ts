@@ -1,9 +1,13 @@
+import { InfoVideoService } from './../../shared/services/info-video.service';
+import { CoursesService } from './../../shared/services/courses.service';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { FormValidComponent } from 'src/app/shared/form-valid/form-valid.component';
 import { ValidEmailService } from 'src/app/shared/services/validEmail.service';
+import { Router } from '@angular/router';
+import { NotifyService } from 'src/app/shared/services/notify.service';
 
 @Component({
   selector: 'app-register-course',
@@ -13,14 +17,22 @@ import { ValidEmailService } from 'src/app/shared/services/validEmail.service';
 export class RegisterCourseComponent implements OnInit {
 
   formulario!: FormGroup;
+
+  aux: any = 0;
+
   listStatus: string[] = ['Disponivel','Indisponivel'];
   listPeriodo: string[] = ['Mensal','Semestral','Anual'];
+
 
 
   constructor(
     private formBuilder: FormBuilder,
     private verificaEmailService: ValidEmailService,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private courseService: CoursesService,
+    private route: Router,
+    private videoService: InfoVideoService,
+    private notifyService: NotifyService
   ) { }
 
   ngOnInit() {
@@ -52,21 +64,37 @@ export class RegisterCourseComponent implements OnInit {
 
   onSubmit(){
 
-    if(this.formulario.valid) {
+    if (this.formulario.valid) {
+      console.log('rewr');
 
-      // this.fazerLogin();
+      if(this.formulario.get('status')?.value == 'Disponivel'){
+        this.aux = 1;
+        console.log("Aux: ",this.aux);
+      }else{
+        this.aux = 0;
+        console.log("Aux: ",this.aux);
+      }
 
-      this.httpClient
-        .post('https://httpbin.org/post', this.formulario.value)
+      this.courseService
+        .insertCurso(
+          this.formulario.get('nome')?.value,
+          this.formulario.get('valor')?.value,
+          this.formulario.get('periodo')?.value,
+          this.formulario.get('descricao')?.value,
+          this.aux
+        )
         .subscribe(
-          dados => {
-            console.log(dados);
-            //reseta o form
-            this.formulario.reset();
-        },
-        (error: any) => alert('Erro!')
+          (success: any) => {
+            console.log(success);
+            this. showToasterSuccess();
+            this.route.navigate(['/cursos/home']);
+          },
+          (error) => {
+            console.log(error);
+            this.showToasterfailed();
+          }
         );
-
+        //developeralysson@gmail.com
     }
     else{
       console.log("Formulario invalido!");
@@ -79,5 +107,21 @@ export class RegisterCourseComponent implements OnInit {
     }
 
   }
+
+  showToasterSuccess(){
+    console.log("teste");
+    const titulo = "Sucesso";
+    const message = "Curso cadastrado com sucesso.";
+    this.notifyService.showSuccess(message, titulo);
+  }
+
+  showToasterfailed(){
+    console.log("teste");
+    const titulo = "Erro!";
+    const message = "Algo de errado ocorreu, por favor tente novamente.";
+    this.notifyService.showError(message, titulo);
+  }
+
+
 
 }

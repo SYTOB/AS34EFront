@@ -38,8 +38,8 @@ background-color: white; box-shadow: 0 7px 6px -7px black; padding: 30px 0px 0px
             >
               <mat-label>Categoria</mat-label>
               <mat-select formControlName="categoria" id="categoria">
-                <mat-option *ngFor="let item of listCategoria" [value]="item">
-                  {{ item }}
+                <mat-option *ngFor="let item of listCategoria" [value]="item.id_etapa">
+                  {{ item.nome_etapa }}
                 </mat-option>
               </mat-select>
               <mat-error *ngIf="hasError('categoria')"
@@ -75,11 +75,11 @@ background-color: white; box-shadow: 0 7px 6px -7px black; padding: 30px 0px 0px
 
         <div flex class="col-xl-12 col-lg-12 col-md-12" style="margin-top: 40px; text-align: center;">
           <button
-          style="margin: 5px; background-color: #6cb575; color: white;"
+          style="margin: 5px;  background-color: #f5ae64; color: white;"
           type="submit"
           class="btn button-register-adm"
         >
-          Adicionar
+          Editar
         </button>
         </div>
 
@@ -88,7 +88,7 @@ background-color: white; box-shadow: 0 7px 6px -7px black; padding: 30px 0px 0px
 <div class="col-xl-4 col-lg-4 col-sm-4 col-md-4" style="margin-top: 80px;" >
 
   <button  type="button" class="btn course-video-button"
-  [routerLink]="['/coursesInterface/',nomeCurso,idCurso]" [routerLinkActive]="['is-active-button']">Voltar
+  [routerLink]="['/coursesInterface/',nomeCurso,idCurso,idEtapa,idVideo]" [routerLinkActive]="['is-active-button']">Voltar
   </button>
 
 </div>

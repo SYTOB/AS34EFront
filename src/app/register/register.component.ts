@@ -10,6 +10,7 @@ import { AuthService } from '../login/auth.service';
 import { Usuario } from '../login/usuario';
 import { FormValidComponent } from '../shared/form-valid/form-valid.component';
 import { ValidEmailService } from '../shared/services/validEmail.service';
+import { NotifyService } from '../shared/services/notify.service';
 
 
 @Component({
@@ -18,6 +19,8 @@ import { ValidEmailService } from '../shared/services/validEmail.service';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
+
+
 
 
   usuario: Usuario = new Usuario();
@@ -33,7 +36,8 @@ export class RegisterComponent implements OnInit {
     private formBuilder: FormBuilder,
     private httpClient: HttpClient,
     private verificaEmailService: ValidEmailService,
-    private serviceUsers: UsersService
+    private serviceUsers: UsersService,
+    private notifyService: NotifyService
     ) { }
 
   ngOnInit(): void {
@@ -62,22 +66,22 @@ export class RegisterComponent implements OnInit {
     if (this.formulario.valid) {
       console.log('rewr');
       this.serviceUsers
-        .register(
+        .registerUser(
           this.formulario.get('nome')?.value,
           this.formulario.get('cpf')?.value,
           this.formulario.get('email')?.value,
           this.formulario.get('senha')?.value,
+          0
         )
         .subscribe(
           (success: any) => {
             console.log(success);
-
-            this.auth.fazerLogin();
+            this.showToasterSuccess();
             this.route.navigate(['/login']);
           },
           (error) => {
             console.log(error);
-            alert("Email ou senha incorretos!");
+            this.showToasterfailed();
           }
         );
         //developeralysson@gmail.com
@@ -92,6 +96,20 @@ export class RegisterComponent implements OnInit {
       });
     }
 
+  }
+
+  showToasterSuccess(){
+    console.log("teste");
+    const titulo = "Sucesso";
+    const message = "Cadastro efetuado com sucesso";
+    this.notifyService.showSuccess(message, titulo);
+  }
+
+  showToasterfailed(){
+    console.log("teste");
+    const titulo = "Erro!";
+    const message = "Algo de errado ocorreu, por favor tente novamente.";
+    this.notifyService.showError(message, titulo);
   }
 
   validarEmail(formControl: FormControl){

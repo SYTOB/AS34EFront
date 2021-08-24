@@ -7,7 +7,7 @@
       <div class="col-xl-3 col-lg-3">
         <p class="panel-label-size" style="color: rgb(95, 95, 95)">Cursos Disponiveis.</p>
       </div>
-      <div class="offset-lg-7 col-xl-2 col-lg-2 ">
+      <div *ngIf="user.tipo_usuario == 1" class="offset-lg-7 col-xl-2 col-lg-2 ">
         <button
           style="margin: 5px"
           type="button"
@@ -22,26 +22,32 @@
 
     <div>
       <ul class="row" style="list-style-type: none; padding-left: 0;">
+
         <li *ngFor="let item of count">
-          <div class="curso-box">
+
+          <div *ngIf="item.visivel_curso == 1" class="curso-box">
+
             <div class="label-curso-box">
-              <label class="label-curso-box-write">{{item}}</label>
+              <label class="label-curso-box-write">{{item.nome_curso}}</label>
             </div>
 
             <hr style="background-color: white; width: 200px" />
 
             <div class="description-curso-box">
               <p class="description-curso-box-write">
-                Descrição detalhada referente ao curso
+                {{item.descricao_curso}}
               </p>
             </div>
             <div class="button-curso-box">
-              <button style="margin: 5px" type="button" class="btn curso-button" [routerLink]="['/cursos/detalheCurso/',item]" >
+              <button style="margin: 5px" type="button" class="btn curso-button" [routerLink]="['/cursos/detalheCurso/',item.id_curso]" >
                 Começar
               </button>
             </div>
+
           </div>
+
         </li>
+
       </ul>
     </div>
 

@@ -14,6 +14,8 @@ import { PurchaseCourseTicketComponent } from './purchase-course-ticket.componen
 
 import { NgxMaskModule, IConfig } from 'ngx-mask'
 
+import { NgxLoaderIndicatorModule } from 'ngx-loader-indicator';
+
 
 const maskConfig: Partial<IConfig> = {
   validation: false,
@@ -30,7 +32,8 @@ const maskConfig: Partial<IConfig> = {
     MatFormFieldModule,
     MatSelectModule,
     MatCheckboxModule,
-    NgxMaskModule.forRoot(maskConfig)
+    NgxMaskModule.forRoot(maskConfig),
+    NgxLoaderIndicatorModule.forRoot()
 
   ]
 

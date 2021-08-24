@@ -1,7 +1,15 @@
-<div style="height: 100px; color:#FE4E4E;">
+<div *ngIf="{mostra}" style="height: 100px; color:#FE4E4E;">
   <label class="panel-head-font">
-    Olá {{ nome.nickname }}. <i class="fa fa-smile-o" aria-hidden="true"></i></label>
+    Olá {{ nome.nome_usuario }}. <i class="fa fa-smile-o" aria-hidden="true"></i></label>
 </div>
+
+<div *ngIf="mostra" style="height: 100px; color:#FE4E4E;">
+  <label class="panel-head-font">
+    Olá ADM - {{ nome.nome_usuario }}. <i class="fa fa-smile-o" aria-hidden="true"></i></label>
+  <label class="panel-head-font" style="font-size: 25px;">
+     Total de certificados emitidos até o dia de hoje: 320.</label>
+</div>
+
 <div style="height: 200px; color:#f36363;">
   <label class="panel-text-font" >A partir deste painel, você poderá verificar seus cursos e certificados<br>
     além de editar sua senha e detalhes da conta.</label>

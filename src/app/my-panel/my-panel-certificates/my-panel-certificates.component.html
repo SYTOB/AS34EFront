@@ -1,4 +1,9 @@
 <div>
+  <div *ngIf="user.tipo_usuario == 1" style="height: 100px; color:#6e6e6e;">
+    <label class="panel-head-font">
+      Número TOTAL de certificados emitidos: <a style="color: #FE4E4E">360.</a></label>
+  </div>
+
   <ul style="list-style-type: none; padding-left: 0;">
     <li class="row" *ngFor="let item of certificados">
       <div class="col-xl-4 col-lg-4" style="background-color: #FE4E4E; color:white; border-radius: 25px; width:50%;" >

@@ -20,6 +20,9 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APP_BASE_HREF } from '@angular/common';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { NgxLoaderIndicatorModule } from 'ngx-loader-indicator';
+import { ToastrModule } from 'ngx-toastr';
+
 
 
 
@@ -41,7 +44,10 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     MatFormFieldModule,
     MatProgressSpinnerModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    NgxLoaderIndicatorModule.forRoot(),
+    BrowserAnimationsModule,
+    ToastrModule.forRoot()
   ],
   exports: [
     MatButtonModule,
@@ -49,7 +55,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     MatToolbarModule,
     MatIconModule,
     MatCardModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    NgxLoaderIndicatorModule
   ],
   providers: [
     { provide: APP_BASE_HREF, useValue: '/' },

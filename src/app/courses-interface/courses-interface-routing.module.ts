@@ -2,19 +2,23 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AddCategoriaComponent } from './add-categoria/add-categoria.component';
 import { AddVideoComponent } from './add-video/add-video.component';
+import { CoursesInterfaceHomeComponent } from './courses-Interface-home/courses-Interface-home.component';
 import { CoursesInterfaceVideoComponent } from './courses-interface-video/courses-interface-video.component';
 import { CoursesInterfaceComponent } from './courses-interface.component';
 import { EditCategoriaComponent } from './edit-categoria/edit-categoria.component';
 import { EditVideoComponent } from './edit-video/edit-video.component';
 
 const routes: Routes = [
-  { path: ':curso', component: CoursesInterfaceComponent,
+  { path: ':curso/:id', component: CoursesInterfaceComponent,
   children: [
-    { path: ':id/addVideo', component: AddVideoComponent },
+    { path: 'home', component: CoursesInterfaceHomeComponent },
     { path: 'addCategoria', component: AddCategoriaComponent },
-    { path: 'editCategoria/:id/:categoria', component: EditCategoriaComponent },
-    { path: ':id/editVideo', component: EditVideoComponent },
-    { path: ':id', component: CoursesInterfaceVideoComponent }
+    { path: ':idEtapa/:idVideo', component: CoursesInterfaceVideoComponent },
+    { path: 'editVideo/:idVideo/:idEtapa', component: EditVideoComponent },
+    { path: 'addVideo/:idVideo/:idEtapa', component: AddVideoComponent },
+    { path: 'editCategoria/:categoria/:idCategoria', component: EditCategoriaComponent }
+
+
 
   ] }
 ];

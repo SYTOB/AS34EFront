@@ -12,4 +12,9 @@ export class ContactComponent implements OnInit {
   ngOnInit() {
   }
 
+  newTab() {
+    window.open(
+      "https://api.whatsapp.com/send?phone=5543988457219", "_blank");
+}
+
 }

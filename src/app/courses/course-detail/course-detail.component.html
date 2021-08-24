@@ -10,12 +10,14 @@
     </div>
 
     <div class="row">
-      <div class="about-contact-text-about">
-        <label style="font-size: 30px; font-weight: 500; color: rgb(95, 95, 95);">Curso:  {{numero}}</label>
+      <div class="about-contact-text-about" style="width: 100%;">
+        <label style="font-size: 30px; font-weight: 500; color: rgb(95, 95, 95);">Curso:
+          <a style="color:#FE4E4E">{{detalhesCurso.nome_curso}}</a>
+           / Periodo:    <a style="color:#FE4E4E">{{detalhesCurso.periodo_curso}}</a>
+           / Preço:    <a style="color:#FE4E4E">R${{detalhesCurso.preco_curso}}</a>
+         </label>
         <hr style="background-color:black">
-        <p class="panel-text-size" style="color: rgb(95, 95, 95)">O Objetivo central desta aba sobre é informar, ou seja, instruir o cliente
-          sobre 'O QUE?', 'COMO' ou até mesmo o 'POR QUE?' seu curso existe, desta forma uma conexão maior é estabelecida entre fornecedor e comprador,
-          assim, possivelmente o número de vendas tende a ser maior graças a está pagina.</p>
+        <p class="panel-text-size" style="color: rgb(95, 95, 95)">{{detalhesCurso.descricao_curso}}</p>
       </div>
 
     </div>

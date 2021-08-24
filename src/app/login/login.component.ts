@@ -16,6 +16,7 @@ import { Usuario } from './usuario';
 import { map } from 'rxjs/operators';
 import { User } from '../shared/user';
 import { UsersService } from '../shared/services/users.service';
+import { NotifyService } from '../shared/services/notify.service';
 
 @Component({
   selector: 'app-login',
@@ -39,7 +40,8 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private verificaEmailService: ValidEmailService,
     private serviceUsers: UsersService,
-    private authService: AuthService
+    private authService: AuthService,
+    private notifyService: NotifyService
   ) {}
 
   ngOnInit(): void {
@@ -75,15 +77,24 @@ export class LoginComponent implements OnInit {
         .subscribe(
           (success: any) => {
             console.log(success);
+            console.log(success.message);
+            if(success.message){
+              this.showToasterfailed();
 
-            localStorage.setItem('user',JSON.stringify(success.user));
-            localStorage.setItem('token',success.access_token);
-            this.auth.fazerLogin();
-            this.route.navigate(['/home']);
+            }else{
+
+              localStorage.setItem('user',JSON.stringify(success));
+              localStorage.setItem('token',success.token_usuario);
+              this.auth.fazerLogin();
+              this.showToasterSuccess();
+              this.route.navigate(['/home']);
+            }
+
+
           },
           (error) => {
             console.log(error);
-            alert("Email ou senha incorretos!");
+            this.showToasterfailed();
           }
         );
     } else {
@@ -113,4 +124,19 @@ export class LoginComponent implements OnInit {
     }
     return aux?.hasError(validate);
   }
+
+  showToasterSuccess(){
+    console.log("teste");
+    const titulo = "Sucesso";
+    const message = "Login efetuado com sucesso.";
+    this.notifyService.showSuccess(message, titulo);
+  }
+
+  showToasterfailed(){
+    console.log("teste");
+    const titulo = "Erro!";
+    const message = "Algo de errado ocorreu, por favor tente novamente.";
+    this.notifyService.showError(message, titulo);
+  }
+
 }

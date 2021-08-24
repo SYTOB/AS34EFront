@@ -1,8 +1,14 @@
 import { Injectable } from '@angular/core';
+
+// @ts-ignore-all
 import PNotify from 'pnotify/dist/es/PNotify';
+// @ts-ignore
 import PNotifyAnimate from 'pnotify/dist/es/PNotifyAnimate';
+// @ts-ignore
 import PNotifyDesktop from 'pnotify/dist/es/PNotifyDesktop';
+// @ts-ignore
 import PNotifyButtons from 'pnotify/dist/es/PNotifyButtons';
+// @ts-ignore
 import PNotifyStyleMaterial from 'pnotify/dist/es/PNotifyStyleMaterial.js';
 
 
@@ -25,6 +31,8 @@ export class PnotifyService {
 
   public info(message: string, desktop: boolean = false) {
     this.notify(message, 'info', 'Aviso', desktop);
+
+
   }
 
   public notice(message: string, desktop: boolean = false) {
@@ -33,6 +41,7 @@ export class PnotifyService {
 
   public success(message: string, desktop: boolean = false) {
     this.notify(message, 'success', 'Concluído', desktop);
+    console.log("teste");
   }
 
   public error(message: string, desktop: boolean = false) {

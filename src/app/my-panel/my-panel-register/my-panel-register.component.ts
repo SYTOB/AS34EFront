@@ -1,9 +1,11 @@
+import { UsersService } from './../../shared/services/users.service';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { FormValidComponent } from 'src/app/shared/form-valid/form-valid.component';
 import { ValidEmailService } from 'src/app/shared/services/validEmail.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-my-panel-register',
@@ -18,14 +20,16 @@ export class MyPanelRegisterComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private verificaEmailService: ValidEmailService,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private serviceUsers: UsersService,
+    private route: Router
   ) { }
 
   ngOnInit() {
     this.formulario = this.formBuilder.group({
       nome: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(50)] ],
-      cpf: [null, [Validators.required, Validators.minLength(3), Validators.pattern(/^(\d{3}\.){2}\d{3}\-\d{2}$/), Validators.maxLength(50)] ],
-      email: [null, [Validators.required, Validators.email], [this.validarEmail.bind(this)]],
+      cpf: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(50)] ],
+      email: [null, [Validators.required, Validators.email]],
       confirmarSenha: [null, [Validators.required, FormValidComponent.equalsTo('senha')] ],
       senha: [null, [Validators.required, Validators.minLength(5), Validators.maxLength(30)] ]
     });
@@ -50,21 +54,30 @@ export class MyPanelRegisterComponent implements OnInit {
 
   onSubmit(){
 
-    if(this.formulario.valid) {
-
-      // this.fazerLogin();
-
-      this.httpClient
-        .post('https://httpbin.org/post', this.formulario.value)
+    if (this.formulario.valid) {
+      console.log('rewr');
+      this.serviceUsers
+        .registerUser(
+          this.formulario.get('nome')?.value,
+          this.formulario.get('cpf')?.value,
+          this.formulario.get('email')?.value,
+          this.formulario.get('senha')?.value,
+          1
+        )
         .subscribe(
-          dados => {
-            console.log(dados);
-            //reseta o form
-            this.formulario.reset();
-        },
-        (error: any) => alert('Erro!')
-        );
+          (success: any) => {
+            console.log(success);
 
+            alert("Usuario(ADM) cadastrado incorretos!");
+
+            this.route.navigate(['/painel/cadastrar']);
+          },
+          (error) => {
+            console.log(error);
+            alert("Usuario ja cadastrado!");
+          }
+        );
+        //developeralysson@gmail.com
     }
     else{
       console.log("Formulario invalido!");
@@ -77,5 +90,6 @@ export class MyPanelRegisterComponent implements OnInit {
     }
 
   }
+
 
 }

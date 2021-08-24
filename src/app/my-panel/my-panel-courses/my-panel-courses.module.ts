@@ -1,3 +1,4 @@
+import { ModalModule } from './../../shared/modal/modal.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MyPanelCoursesComponent } from './my-panel-courses.component';
@@ -10,7 +11,8 @@ import {MatDialogModule} from '@angular/material/dialog';
   imports: [
     CommonModule,
     RouterModule,
-    MatDialogModule
+    MatDialogModule,
+    ModalModule
   ]
 
 })

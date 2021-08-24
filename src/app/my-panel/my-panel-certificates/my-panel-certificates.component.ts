@@ -9,6 +9,10 @@ export class MyPanelCertificatesComponent implements OnInit {
 
   certificados: any[] = [1,2,3,4,5];
 
+  aux: any = localStorage.getItem('user');
+  user: any = JSON.parse(this.aux);
+
+
   constructor() { }
 
   ngOnInit() {

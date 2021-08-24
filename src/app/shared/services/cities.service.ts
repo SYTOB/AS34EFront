@@ -12,7 +12,7 @@ export class CitiesService {
   constructor(private http: HttpClient) {}
 
   lista(estado:any) {
-    return this.http.get(`@api/common/cities/`+estado,{});
+    return this.http.get(`https://www47.kether.me/api/common/cities/`+estado,{});
   }
 
 

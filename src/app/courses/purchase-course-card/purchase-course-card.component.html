@@ -1,8 +1,8 @@
-<div class="container-base hSubBlueContainer-purchase-card">
+<div class="container-base hSubBlueContainer-purchase-card" [loader]="loading">
   <div class="about-contact-head">
     <div class="contact-about-height-label" style="padding-right: 80px">
       <div >
-        <p class=" panel-label-size"  style="color: rgb(95, 95, 95)">Comprar Curso: {{numero}} - Cartão</p>
+        <p class="panel-label-size"  style="color: rgb(95, 95, 95)">Comprar Curso: {{detalhesCurso.nome_curso}} - Cartão</p>
         <span style="cursor: pointer;" [routerLink]="['/cursos/detalheCurso/',numero]">
           <i class="fa fa-hand-o-left" aria-hidden="true"></i> Voltar para detalhes do curso
         </span>
@@ -129,10 +129,10 @@
           <hr style="background-color:rgb(95, 95, 95);  ">
           <div class="row">
             <div class="col-xl-3 col-lg-3 col-md-3">
-              <label style="color: rgb(95, 95, 95); font-size: 25px;">Curso: {{numero}}</label>
+              <label style="color: rgb(95, 95, 95); font-size: 25px;">Curso: {{detalhesCurso.nome_curso}}</label>
             </div>
             <div class="offset-xl-6 col-xl-3 col-lg-3 col-md-3">
-              <label style="color: rgb(95, 95, 95); font-size: 25px;">R$500,00</label>
+              <label style="color: rgb(95, 95, 95); font-size: 25px;">R${{detalhesCurso.preco_curso}}</label>
 
             </div>
 

@@ -1,9 +1,13 @@
-import { Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { AttCatVidService } from './../../shared/services/att-cat-vid.service';
+import { InfoVideoService } from './../../shared/services/info-video.service';
+import { Subject, Subscription } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { takeUntil } from 'rxjs/operators';
+import { NotifyService } from 'src/app/shared/services/notify.service';
 
 
 export interface Video {
@@ -26,6 +30,8 @@ export class EditCategoriaComponent implements OnInit {
 
   idCurso: any;
 
+  idCategoria: any;
+
   urlCurso: any;
 
   formulario!: FormGroup;
@@ -37,48 +43,71 @@ export class EditCategoriaComponent implements OnInit {
   listCategoria: string[] = ['Introdução','Subversão'];
 
 
-
+  private _destroy: Subject<any> = new Subject<any>();
 
   constructor(
     private httpClient: HttpClient,
     private formBuilder: FormBuilder,
     private sanitizer: DomSanitizer,
-    private activeRoute: ActivatedRoute
+    private activeRoute: ActivatedRoute,
+    private videoService: InfoVideoService,
+    private route: Router,
+    private atualiza: AttCatVidService,
+    private notifyService: NotifyService
     ) { }
 
   ngOnInit() {
 
-    this.activeRoute.params.subscribe(
+    this.activeRoute.params.pipe(takeUntil(this._destroy)).subscribe(
+      (info) => {
+
+        console.log("NomeEstapa: ",info['categoria']);
+
+        this.nomeCategoria = info['categoria'];
+        this.carregaForm();
+
+      }
+    );
+
+    this.activeRoute.parent?.params.pipe(takeUntil(this._destroy)).subscribe(
       (info) => {
         this.idCurso = info['id'];
-        console.log("activeRouteCat: ",info['categoria']);
-        this.nomeCategoria = info['categoria'];
-
-
-      }
-    );
-
-    this.activeRoute.parent?.params.subscribe(
-      (info) => {
-        console.log("activeRoute: ",info['curso']);
         this.nomeCurso = info['curso'];
+        console.log("idCurso: ",this.idCurso);
+        console.log("NomeCurso: ",this.nomeCurso);
+      }
+
+    );
+
+    this.activeRoute.params.pipe(takeUntil(this._destroy)).subscribe(
+      (info) => {
+        console.log("IdEtapa: ",info['idCategoria']);
+        this.idCategoria = info['idCategoria'];
 
 
       }
     );
 
-    this.formulario = this.formBuilder.group({
-      titulo: [this.nomeCategoria, [ Validators.minLength(3), Validators.maxLength(50)] ]
-    });
 
 
 
+    // tudo que precisar fazer unsubscribe vc pode usar esse pipe que ele vai fazer sem precisar criar varios subscriptions
+    // .pipe(takeUntil(this._destroy)) Entendi
 
 
   }
 
-  ngOnDestroy(): void {
+  carregaForm(){
+    this.formulario = this.formBuilder.group({
+      titulo: [this.nomeCategoria, [ Validators.minLength(3), Validators.maxLength(50)] ]
+    });
+  }
 
+
+
+  ngOnDestroy(): void {
+    this._destroy.next(true);
+    this._destroy.unsubscribe();
   }
 
 
@@ -104,18 +133,24 @@ export class EditCategoriaComponent implements OnInit {
 
     if(this.formulario.valid) {
 
-      // this.fazerLogin();
+      this.videoService
+      .attEtapa(
+        this.formulario.get('titulo')?.value,
+        this.idCategoria
 
-      this.httpClient
-        .post('https://httpbin.org/post', this.formulario.value)
-        .subscribe(
-          dados => {
-            console.log(dados);
-            //reseta o form
-            this.formulario.reset();
+      )
+      .subscribe(
+        (success: any) => {
+          console.log(success);
+          this.atualiza.atualiza();
+          this.route.navigate([`/coursesInterface/${this.nomeCurso}/${this.idCurso}`]);
+          this.showToasterSuccess();
         },
-        (error: any) => alert('Erro!')
-        );
+        (error) => {
+          console.log(error);
+          this.showToasterfailed();
+        }
+      );
 
     }
     else{
@@ -128,6 +163,20 @@ export class EditCategoriaComponent implements OnInit {
       });
     }
 
+  }
+
+  showToasterSuccess(){
+    console.log("teste");
+    const titulo = "Sucesso";
+    const message = "Etapa editada com sucesso.";
+    this.notifyService.showSuccess(message, titulo);
+  }
+
+  showToasterfailed(){
+    console.log("teste");
+    const titulo = "Erro!";
+    const message = "Algo de errado ocorreu, por favor tente novamente.";
+    this.notifyService.showError(message, titulo);
   }
 
 }

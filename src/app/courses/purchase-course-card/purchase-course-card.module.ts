@@ -14,6 +14,7 @@ import { RouterModule } from '@angular/router';
 import { PurchaseCourseCardComponent } from './purchase-course-card.component';
 
 import { NgxMaskModule, IConfig } from 'ngx-mask'
+import { NgxLoaderIndicatorModule } from 'ngx-loader-indicator';
 
 
 const maskConfig: Partial<IConfig> = {
@@ -32,7 +33,8 @@ const maskConfig: Partial<IConfig> = {
     MatFormFieldModule,
     MatSelectModule,
     MatCheckboxModule,
-    NgxMaskModule.forRoot(maskConfig)
+    NgxMaskModule.forRoot(maskConfig),
+    NgxLoaderIndicatorModule.forRoot()
   ]
 
 })

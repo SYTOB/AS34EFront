@@ -14,7 +14,7 @@ export class StatesService {
   constructor(private http: HttpClient) {}
 
   lista() {
-    return this.http.get('@api/common/states',{ });
+    return this.http.get('https://www47.kether.me/api/common/states',{ });
   }
 
 

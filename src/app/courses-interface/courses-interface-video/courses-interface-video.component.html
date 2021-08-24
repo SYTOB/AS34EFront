@@ -12,7 +12,7 @@
     <div class="col-xl-4 col-lg-4 col-sm-4 col-md-4" >
 
       <button  type="button" class="btn course-video-button" style=" width:200px; "
-      [routerLink]="['/coursesInterface/',nomeCurso,idCurso,'addVideo']" [routerLinkActive]="['is-active-button']">
+      [routerLink]="['/coursesInterface/',nomeCurso,videoCap.id_curso,'addVideo',idVideo,idEtapa]" [routerLinkActive]="['is-active-button']">
       <i class="fa fa-plus" aria-hidden="true"> </i>Adicionar
       </button>
 
@@ -21,7 +21,7 @@
     <div class="col-xl-4 col-lg-4 col-sm-4 col-md-4">
 
       <button  type="button" class="btn course-video-button" style=" width:200px;"
-      [routerLink]="['/coursesInterface/',nomeCurso,idCurso,'editVideo']" [routerLinkActive]="['is-active-button']">
+      [routerLink]="['/coursesInterface/',nomeCurso,videoCap.id_curso,'editVideo',idVideo,idEtapa]" [routerLinkActive]="['is-active-button']">
       <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar
       </button>
 
@@ -29,8 +29,8 @@
 
     <div class="col-xl-4 col-lg-4 col-sm-4 col-md-4">
 
-      <button type="button" class="btn course-video-button" style=" width:200px;">
-        <i class="fa fa-ban" aria-hidden="true"></i> Excluir</button>
+      <button type="button" class="btn course-video-button" style=" width:200px;" (click)=" openDialog()">
+        <i class="fa fa-ban" aria-hidden="true" ></i> Excluir</button>
 
     </div>
 

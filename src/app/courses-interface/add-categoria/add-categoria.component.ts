@@ -1,9 +1,13 @@
-import { Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { AttCatVidService } from './../../shared/services/att-cat-vid.service';
+import { InfoVideoService } from './../../shared/services/info-video.service';
+import { Subject, Subscription } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { takeUntil } from 'rxjs/operators';
+import { NotifyService } from 'src/app/shared/services/notify.service';
 
 
 export interface Video {
@@ -26,35 +30,60 @@ export class AddCategoriaComponent implements OnInit {
 
   idCurso: any;
 
+  nomeCurso: any;
   urlCurso: any;
 
   formulario!: FormGroup;
 
   listCategoria: string[] = ['Introdução','Subversão'];
 
-
+  private _destroy: Subject<any> = new Subject<any>();
 
 
   constructor(
     private httpClient: HttpClient,
     private formBuilder: FormBuilder,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private videoService: InfoVideoService,
+    private route: Router,
+    private activeRoute: ActivatedRoute,
+    private atualiza: AttCatVidService,
+    private notifyService: NotifyService
     ) { }
 
   ngOnInit() {
 
+    this.activeRoute.parent?.params.pipe(takeUntil(this._destroy)).subscribe(
+      (info) => {
+        this.idCurso = info['id'];
+        console.log("idCurso ADDCAt: ",this.idCurso);
+
+
+
+      }
+    );
+
+    this.activeRoute.parent?.params.pipe(takeUntil(this._destroy)).subscribe(
+      (info) => {
+        this.nomeCurso = info['curso'];
+        console.log("NomeCurso ADDCAt: ",this.nomeCurso);
+
+      }
+    );
+
     this.formulario = this.formBuilder.group({
-      titulo: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(50)] ],
-      url: [null, [Validators.required] ],
-      categoria: [null,[Validators.required]]
+      titulo: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(50)] ]
     });
+
 
 
   }
 
   ngOnDestroy(): void {
-
+    this._destroy.next(true);
+    this._destroy.unsubscribe();
   }
+
 
 
 
@@ -81,16 +110,26 @@ export class AddCategoriaComponent implements OnInit {
 
       // this.fazerLogin();
 
-      this.httpClient
-        .post('https://httpbin.org/post', this.formulario.value)
-        .subscribe(
-          dados => {
-            console.log(dados);
-            //reseta o form
-            this.formulario.reset();
+      this.videoService
+      .insertNovaEtapa(
+        this.idCurso,
+        this.formulario.get('titulo')?.value
+
+      )
+      .subscribe(
+        (success: any) => {
+          console.log(success);
+          this.atualiza.atualiza();
+          this.formulario.reset();
+          // this.route.navigate([`/coursesInterface/${this.nomeCurso}/${this.idCurso}`]);
+          this.showToasterSuccess();
         },
-        (error: any) => alert('Erro!')
-        );
+        (error) => {
+          console.log(error);
+          this.showToasterfailed();
+        }
+      );
+
 
     }
     else{
@@ -103,6 +142,20 @@ export class AddCategoriaComponent implements OnInit {
       });
     }
 
+  }
+
+  showToasterSuccess(){
+    console.log("teste");
+    const titulo = "Sucesso";
+    const message = "Categoria adicionada com sucesso.";
+    this.notifyService.showSuccess(message, titulo);
+  }
+
+  showToasterfailed(){
+    console.log("teste");
+    const titulo = "Erro!";
+    const message = "Algo de errado ocorreu, por favor tente novamente.";
+    this.notifyService.showError(message, titulo);
   }
 
 }

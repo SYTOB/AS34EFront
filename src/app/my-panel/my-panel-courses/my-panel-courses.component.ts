@@ -1,3 +1,5 @@
+import { AttCatVidService } from './../../shared/services/att-cat-vid.service';
+import { CoursesService } from './../../shared/services/courses.service';
 import { StatesService } from 'src/app/shared/services/states.service';
 
 import { observable, Observable, Subscription } from 'rxjs';
@@ -13,23 +15,101 @@ import { ModalComponent } from 'src/app/shared/modal/modal.component';
 })
 export class MyPanelCoursesComponent implements OnInit {
 
-  cursos: any[] = ["Angular","Java","NetBeans","Python","Culinaria"];
+  cursos: any;
+  inscricao!: Subscription;
+
+
+  aux: any = localStorage.getItem('user');
+  user: any = JSON.parse(this.aux);
 
 
 
 
-  constructor(private dialog: MatDialog, private states: StatesService){
+  constructor(
+    private dialog: MatDialog,
+    private states: StatesService,
+    private atualiza: AttCatVidService,
+    private courseService: CoursesService){
 
 
    }
 
   ngOnInit() {
 
+    this.inscricao = this.atualiza.atualizaEmitter.subscribe(
+      (success: boolean) => {
+
+        if(success){
+          this.carregarCursos();
+        }else{
+          alert("false!");
+        }
+
+
+      },
+      (error) => {
+
+
+        alert("ERRO AO ATUALIZAR!");
+      }
+
+    );
+
+    this.carregarCursos();
+
+
+
   }
 
-  openDialog(item:any) {
+  carregarCursos(){
 
-    const observable = this.states.lista();
+    if(this.user.tipo_usuario == 1){
+
+      this.courseService
+      .getCursos()
+      .subscribe(
+        (success: any) => {
+          console.log(success);
+
+          this.cursos = success;
+          console.log("Lista cursos: ",this.cursos);
+
+        },
+        (error) => {
+
+          console.log(error);
+          alert("Erro!");
+        }
+      );
+
+    }else{
+
+      this.courseService
+      .getCursosComprados(
+        3
+      )
+      .subscribe(
+        (success: any) => {
+          console.log(success);
+
+          this.cursos = success;
+          console.log("Lista cursos: ",this.cursos);
+
+        },
+        (error) => {
+
+          console.log(error);
+          alert("Erro!");
+        }
+      );
+
+    }
+
+  }
+
+  openDialog(item:number) {
+
+    const observable = this.courseService.deleteCurso(item);
 
     const titulo = "Excluir curso"
 
@@ -37,12 +117,6 @@ export class MyPanelCoursesComponent implements OnInit {
 
     const dialog = this.dialog.open(ModalComponent, {data: { mensagem , titulo , observable },width: '500px',height: '250px'})
 
-    // const dialogConfig = new MatDialogConfig();
-
-    // dialogConfig.disableClose = true;
-    // dialogConfig.autoFocus = true;
-
-    // this.dialog.open(ModalComponent, dialogConfig);
   }
 
 
