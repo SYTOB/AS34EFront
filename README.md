@@ -1,6 +1,4 @@
-# AS34ECursos
+# plataforma-cursos Front
 
-Este projeto foi gerado com  [Angular CLI](https://github.com/angular/angular-cli) versão 12.1.1.
-
-By: Diovani Henrique Morganti da Silva
+Projeto desenvolvido durante a disciplina de Oficina de Integração do 4º semestre de Análise e Desenvolvimento de Sistemas (UTFPR)
 
