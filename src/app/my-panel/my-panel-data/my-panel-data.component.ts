@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { FormValidComponent } from 'src/app/shared/form-valid/form-valid.component';
 import { ValidEmailService } from 'src/app/shared/services/validEmail.service';
 import { Router } from '@angular/router';
+import { NotifyService } from 'src/app/shared/services/notify.service';
 
 @Component({
   selector: 'app-my-panel-data',
@@ -25,7 +26,8 @@ export class MyPanelDataComponent implements OnInit {
     private formBuilder: FormBuilder,
     private verificaEmailService: ValidEmailService,
     private userService: UsersService,
-    private route: Router
+    private route: Router,
+    private notifyService: NotifyService
   ) { }
 
   ngOnInit() {
@@ -79,7 +81,7 @@ export class MyPanelDataComponent implements OnInit {
         },
         (error) => {
           console.log(error);
-          alert("Erro! Tente novamente!");
+          this.showToasterfailed();
         }
       );
         //developeralysson@gmail.com
@@ -110,18 +112,32 @@ export class MyPanelDataComponent implements OnInit {
           (success: any) => {
             console.log(success);
 
-            alert("Dados Salvos!");
+            this.showToasterSuccess();
             this.formulario.reset();
             this.route.navigate(['/painel/dados']);
           },
           (error) => {
             console.log(error);
-            alert("Erro! Tente novamente!");
+            this.showToasterfailed();
           }
         );
     }else{
-      alert("Campo senha Atual invalido!");
+      this.showToasterfailed();
     }
+  }
+
+  showToasterSuccess(){
+    console.log("teste");
+    const titulo = "Sucesso";
+    const message = "Dados editados.";
+    this.notifyService.showSuccess(message, titulo);
+  }
+
+  showToasterfailed(){
+    console.log("teste");
+    const titulo = "Erro!";
+    const message = "Algo de errado ocorreu!";
+    this.notifyService.showError(message, titulo);
   }
 
 }

@@ -51,7 +51,7 @@
             <mat-form-field class="example-full-width" style="font-size: 20px;" appearance="fill">
                 <mat-label>Nova Senha</mat-label>
                 <input id="confirmarSenha" formControlName="novaSenha" matInput placeholder="Nova Senha" type="password" >
-                <mat-error *ngIf="hasError('novaSenha', 'minlength')">Minímo de 3 caracteres.</mat-error>
+                <mat-error *ngIf="hasError('novaSenha', 'minlength')">Minímo de 5 caracteres.</mat-error>
                 <mat-error *ngIf="hasError('novaSenha', 'maxlength')">Máximo de 30 caracteres.</mat-error>
 
             </mat-form-field>

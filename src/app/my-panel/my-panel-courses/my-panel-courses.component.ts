@@ -18,6 +18,7 @@ export class MyPanelCoursesComponent implements OnInit {
   cursos: any;
   inscricao!: Subscription;
 
+  truee: any = false;
 
   aux: any = localStorage.getItem('user');
   user: any = JSON.parse(this.aux);
@@ -36,7 +37,13 @@ export class MyPanelCoursesComponent implements OnInit {
 
   ngOnInit() {
 
-    this.inscricao = this.atualiza.atualizaEmitter.subscribe(
+    console.log("usuario: ",this.user.nome_usuario);
+
+    if(this.user.tipo_usuario == 1){
+      this.truee = true;
+    }
+
+    this.inscricao = this.atualiza.atualizaCursosEmitter.subscribe(
       (success: boolean) => {
 
         if(success){
@@ -63,6 +70,8 @@ export class MyPanelCoursesComponent implements OnInit {
 
   carregarCursos(){
 
+    console.log("Tipo: ", this.user.tipo_usuario);
+
     if(this.user.tipo_usuario == 1){
 
       this.courseService
@@ -86,14 +95,14 @@ export class MyPanelCoursesComponent implements OnInit {
 
       this.courseService
       .getCursosComprados(
-        3
+        this.user.email_usuario
       )
       .subscribe(
         (success: any) => {
-          console.log(success);
 
           this.cursos = success;
           console.log("Lista cursos: ",this.cursos);
+          console.log("Curso: ",);
 
         },
         (error) => {

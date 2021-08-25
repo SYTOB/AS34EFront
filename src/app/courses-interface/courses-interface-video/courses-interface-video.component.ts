@@ -28,6 +28,12 @@ export interface Video {
 })
 export class CoursesInterfaceVideoComponent implements OnInit {
 
+  aux: any = localStorage.getItem('user');
+  user: any = JSON.parse(this.aux);
+
+  truee: any = false;
+
+
   urlVideo:any;
 
   inscricao!: Subscription;
@@ -55,6 +61,11 @@ export class CoursesInterfaceVideoComponent implements OnInit {
 
 
   ngOnInit() {
+
+    if(this.user.tipo_usuario == 1){
+      this.truee = true;
+    }
+
     this.activeRoute.params.pipe(takeUntil(this._destroy)).subscribe(
       (info) => {
         this.idVideo = info['idVideo'];

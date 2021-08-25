@@ -10,13 +10,14 @@
           [routerLink]="['/coursesInterface/',item.nome_curso,item.id_curso]" [routerLinkActive]="['is-active-button']">{{item.nome_curso}}</label>
         </div>
       </div>
-      <div class="col-xl-1 col-lg-2 col-md-2">
+      <div *ngIf="truee == true" class="col-xl-1 col-lg-2 col-md-2">
         <button class="btn course-option-button"
         style="background-color: #f5ae64; color: white"
         type="button" [routerLink]="['/cursos/editarCurso/',item.id_curso]" [routerLinkActive]="['is-active-button']">
-        <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</button>
+        <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar </button>
+
       </div>
-      <div class="col-xl-1 col-lg-2 col-md-2">
+      <div *ngIf="truee == true" class="col-xl-1 col-lg-2 col-md-2">
         <button class="btn course-option-button"
         style="background-color: #FE4E4E; color: white;"
         type="button" [routerLinkActive]="['is-active-button']" (click)="openDialog(item)">

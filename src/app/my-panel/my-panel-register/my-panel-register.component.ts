@@ -1,3 +1,4 @@
+import { NotifyService } from './../../shared/services/notify.service';
 import { UsersService } from './../../shared/services/users.service';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
@@ -22,7 +23,8 @@ export class MyPanelRegisterComponent implements OnInit {
     private verificaEmailService: ValidEmailService,
     private httpClient: HttpClient,
     private serviceUsers: UsersService,
-    private route: Router
+    private route: Router,
+    private notifyService: NotifyService
   ) { }
 
   ngOnInit() {
@@ -68,19 +70,18 @@ export class MyPanelRegisterComponent implements OnInit {
           (success: any) => {
             console.log(success);
 
-            alert("Usuario(ADM) cadastrado incorretos!");
-
+            this.showToasterSuccess();
             this.route.navigate(['/painel/cadastrar']);
           },
           (error) => {
             console.log(error);
-            alert("Usuario ja cadastrado!");
+            this.showToasterfailed();
           }
         );
         //developeralysson@gmail.com
     }
     else{
-      console.log("Formulario invalido!");
+
       Object.keys(this.formulario.controls).forEach(campo => {
         console.log("Campos: ",campo);
         const controle = this.formulario.get(campo);
@@ -89,6 +90,21 @@ export class MyPanelRegisterComponent implements OnInit {
       });
     }
 
+  }
+
+
+  showToasterSuccess(){
+    console.log("teste");
+    const titulo = "Sucesso";
+    const message = "Novo ADM cadastrado!";
+    this.notifyService.showSuccess(message, titulo);
+  }
+
+  showToasterfailed(){
+    console.log("teste");
+    const titulo = "Erro!";
+    const message = "Algo de errado ocorreu, provavelmente o server ta DOWN.";
+    this.notifyService.showError(message, titulo);
   }
 
 

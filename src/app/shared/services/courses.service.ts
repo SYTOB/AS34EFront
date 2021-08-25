@@ -42,8 +42,8 @@ export class CoursesService {
     return this.http.get('@api/cursos');
   }
 
-  getCursosComprados(id_user: number) {
-    return this.http.get(`@api/cursoUsuario/${id_user}`);
+  getCursosComprados(email_usuario: string) {
+    return this.http.get(`@api/cursoUsuario/${email_usuario}`);
   }
 
   getCurso(id_curso: number){
@@ -67,18 +67,6 @@ export class CoursesService {
   buyCurso(id_curso: number, email_usuario: string, tipo_compra: string, rua_endereco: string,
     numero_endereco: string, complemento_endereco: string, bairro_endereco: string,
     estado_endereco: string, cidade_endereco: string, cep_endereco: string){
-
-      console.log("ID-CURSO: ",id_curso);
-      console.log("EMAIL: ",email_usuario);
-      console.log("TIPO COMPRA: ",tipo_compra);
-      console.log("RUA: ",rua_endereco);
-      console.log("NUMERO: ",numero_endereco);
-      console.log("COMPLEMENTO: ",complemento_endereco);
-      console.log("BAIRRO: ",bairro_endereco);
-      console.log("ESTADO: ",estado_endereco);
-      console.log("CIDADE: ",cidade_endereco);
-      console.log("CEP: ",cep_endereco);
-
 
     return this.http.post('@api/compras',{id_curso, email_usuario, tipo_compra,
       rua_endereco, numero_endereco, complemento_endereco, bairro_endereco, estado_endereco, cidade_endereco, cep_endereco});
